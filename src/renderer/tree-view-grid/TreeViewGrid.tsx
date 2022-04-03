@@ -7,17 +7,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useTable, useExpanded, Column } from 'react-table';
-
-type RowData = {
-  id: string;
-  label: string;
-  namespace: string;
-};
+import { RowData } from './types';
+import { LabelCell } from './LabelCell';
 
 const columns: Column<RowData>[] = [
   {
     Header: 'Label',
     accessor: 'label',
+    Cell: LabelCell,
   },
   {
     Header: 'Namespace',
