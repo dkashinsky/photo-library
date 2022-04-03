@@ -1,24 +1,21 @@
 import React from 'react';
 import Button from "@mui/material/Button";
 import { CellProps } from "react-table";
-import { RowData } from "./types";
-import { Box, IconButton } from '@mui/material';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { Box } from '@mui/material';
+import { RowData } from './data';
+import { ExpandButtonPlaceholder, RowExpandButton } from './RowExpandButton';
 
 export type LabelCellProps = CellProps<RowData, string>;
 
 export const LabelCell: React.FC<LabelCellProps> = ({ value, row }) => {
+  const { depth, children } = row.original;
+  const isExpandable = !!children.length;
+
   return (
-    <Box>
-      <IconButton
-        size='small'
-        {...row.getToggleRowExpandedProps()}
-      >
-        {row.isExpanded
-          ? <ArrowDropDownIcon />
-          : <ArrowRightIcon />}
-      </IconButton>
+    <Box ml={4 * depth}>
+      {isExpandable
+        ? <RowExpandButton row={row} />
+        : <ExpandButtonPlaceholder />}
       <Button size='small'>
         {value}
       </Button>

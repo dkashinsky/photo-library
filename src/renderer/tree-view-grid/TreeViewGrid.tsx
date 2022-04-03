@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,8 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useTable, useExpanded, Column } from 'react-table';
-import { RowData } from './types';
 import { LabelCell } from './LabelCell';
+import { getData, RowData } from './data';
 
 const columns: Column<RowData>[] = [
   {
@@ -22,18 +22,25 @@ const columns: Column<RowData>[] = [
   }
 ];
 
-const data: RowData[] = [
-  { id: '1', label: 'Process', namespace: 'URN:classes' }
-];
-
 const TreeViewGrid: React.FC = () => {
+  const data = useMemo(() => {
+    const [root] = getData();
+    return [root];
+  }, []);
+
+  const tableInstance = useTable({
+    columns,
+    data,
+    getSubRows: (row) => row.children,
+  }, useExpanded);
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data, }, useExpanded);
+  } = tableInstance;
 
   return (
     <TableContainer component={Paper}>
