@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-starter",
+  "name": "rdf-query-ui",
   "private": true,
   "version": "0.0.1",
-  "description": "Electron+React Starter Template",
+  "description": "Electron app to query specific knowledge base and display it as a tree view",
   "scripts": {
     "start:web": "vite serve ./src/renderer",
     "start:shell": "electron ./src/main/index.js",
@@ -11,17 +11,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dkashinsky/electron-react-starter.git"
+    "url": "git+https://github.com/dkashinsky/rdf-query-ui.git"
   },
   "keywords": [
     "electron",
     "react",
-    "starter"
   ],
   "author": "Dmitry Kashinsky",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dkashinsky/electron-react-starter/issues"
+    "url": "https://github.com/dkashinsky/rdf-query-ui/issues"
   },
   "devDependencies": {
     "@types/react": "^17.0.43",
