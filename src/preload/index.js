@@ -10,13 +10,13 @@ const getVersions = () => {
   return versions;
 };
 
-const fs = {
-  readCurrentFolder : () => ipcRenderer.invoke('fs:current-folder'),
+const api = {
+  readKnowledgeBase : () => ipcRenderer.invoke('api:kb:read'),
 };
 
 const bridge = {
   versions: getVersions(),
-  fs,
+  api,
 };
 
 contextBridge.exposeInMainWorld('bridge', bridge);

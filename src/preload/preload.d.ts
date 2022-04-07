@@ -3,9 +3,9 @@ export interface ElectronBridge {
     chrome: string;
     node: string;
     electron: string;
-  },
-  fs: {
-    readCurrentFolder: () => Promise<string[]>;
+  }
+  api: {
+    readKnowledgeBase: () => Promise<string>;
   }
 }
 

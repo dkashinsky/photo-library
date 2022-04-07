@@ -1,9 +1,11 @@
 const { ipcMain } = require('electron');
-const { readdir } = require('fs/promises');
+const { readFile } = require('fs/promises');
+const { resolve } = require('path');
 
 const registerEventHandlers = () => {
-  ipcMain.handle('fs:current-folder', async () => {
-    return await readdir(__dirname);
+  ipcMain.handle('api:kb:read', async () => {
+    const kbFile = resolve(__dirname, '../../assets/KBTA.n3');
+    return await readFile(kbFile, 'utf-8');
   });
 };
 
