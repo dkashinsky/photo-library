@@ -43,7 +43,7 @@ const TreeViewGrid: React.FC = () => {
   } = tableInstance;
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ flex: 1 }}>
       <Table size='small' {...getTableProps()}>
         <TableHead>
           {headerGroups.map(headerGroup => (
