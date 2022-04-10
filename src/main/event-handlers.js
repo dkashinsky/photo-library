@@ -1,5 +1,6 @@
 const { ipcMain, dialog } = require('electron');
 const { basename } = require('path');
+const { Folder } = require('./data-layer');
 
 const registerEventHandlers = (mainWindow) => {
   ipcMain.handle('api:addDirectory', async () => {
@@ -7,19 +8,26 @@ const registerEventHandlers = (mainWindow) => {
       properties: ['openDirectory'],
     });
 
-    return canceled
-      ? null
-      : getDirectoryInfo(filePaths[0]);
+    if (!canceled) {
+      const folder = await Folder.create({ path: filePaths[0] });
+      return getDirectoryInfo(folder);
+    }
+
+    return null;
+  });
+
+  ipcMain.handle('api:getDirectories', async () => {
+    const folders = await Folder.findAll();
+
+    return folders.map(getDirectoryInfo);
   });
 };
 
-const getDirectoryInfo = (path) => {
-  return {
-    id: path,
-    name: basename(path),
-    path,
-  };
-};
+const getDirectoryInfo = (folder) => ({
+  id: folder.id,
+  name: basename(folder.path),
+  path: folder.path,
+});
 
 module.exports = {
   registerEventHandlers,

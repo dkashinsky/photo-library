@@ -12,6 +12,7 @@ const getVersions = () => {
 
 const api = {
   addDirectory: () => ipcRenderer.invoke('api:addDirectory'),
+  getDirectories: () => ipcRenderer.invoke('api:getDirectories'),
 };
 
 const bridge = {
