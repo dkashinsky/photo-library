@@ -1,8 +1,8 @@
 {
-  "name": "rdf-query-ui",
+  "name": "photo-library",
   "private": true,
   "version": "0.0.1",
-  "description": "Electron app to query specific knowledge base and display it as a tree view",
+  "description": "Electron app to easily manage photographs and find people",
   "scripts": {
     "start:web": "vite serve ./src/renderer",
     "start:shell": "electron ./src/main/index.js",
@@ -11,16 +11,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dkashinsky/rdf-query-ui.git"
+    "url": "git+https://github.com/dkashinsky/photo-library.git"
   },
   "keywords": [
     "electron",
-    "react"
+    "react",
+    "photo-library"
   ],
   "author": "Dmitry Kashinsky",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dkashinsky/rdf-query-ui/issues"
+    "url": "https://github.com/dkashinsky/photo-library/issues"
   },
   "devDependencies": {
     "@types/react": "^17.0.43",
