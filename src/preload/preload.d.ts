@@ -1,4 +1,5 @@
 export type DirectoryInfo = {
+  id: string;
   name: string;
   path: string;
 }

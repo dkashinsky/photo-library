@@ -15,6 +15,7 @@ const registerEventHandlers = (mainWindow) => {
 
 const getDirectoryInfo = (path) => {
   return {
+    id: path,
     name: basename(path),
     path,
   };

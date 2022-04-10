@@ -4,7 +4,9 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { BridgeContext } from '../../bridge/bridge';
 import { NoLocationsFound } from './NoLocationsFound';
 import { Locations } from './Locations';
-import { DirectoryInfo } from '../../../preload/preload';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectLocations } from '../../store/locations/selectors';
+import { addLocationItem } from '../../store/locations/actions';
 
 const StyledPaper = styled(Paper)({
   display: 'flex',
@@ -13,18 +15,17 @@ const StyledPaper = styled(Paper)({
 
 export const Sidebar = () => {
   const bridge = useContext(BridgeContext);
-  const [folders, setFolders] = useState<Array<DirectoryInfo>>([]);
+  const folders = useSelector(selectLocations);
+  const dispatch = useDispatch();
 
   const addLocation = useCallback(async () => {
     if (bridge) {
       const directory = await bridge.api.addDirectory();
       if (directory) {
-        setFolders((inner) => {
-          return [...inner, directory];
-        })
+        dispatch(addLocationItem(directory));
       }
     }
-  }, [bridge]);
+  }, [bridge, dispatch]);
 
   return (
     <StyledPaper sx={{ marginRight: 1 }}>

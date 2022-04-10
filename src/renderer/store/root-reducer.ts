@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import treeViewReducer from './tree-view/reducer';
+import locationsReducer from './locations/reducer';
 
 export const rootReducer = combineReducers({
-  treeView: treeViewReducer,
+  location: locationsReducer,
 });
