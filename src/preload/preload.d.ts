@@ -1,3 +1,8 @@
+export type DirectoryInfo = {
+  name: string;
+  path: string;
+}
+
 export interface ElectronBridge {
   versions: {
     chrome: string;
@@ -5,7 +10,7 @@ export interface ElectronBridge {
     electron: string;
   }
   api: {
-    readKnowledgeBase: () => Promise<string>;
+    addDirectory: () => Promise<DirectoryInfo | null>;
   }
 }
 

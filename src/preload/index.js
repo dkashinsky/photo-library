@@ -11,7 +11,7 @@ const getVersions = () => {
 };
 
 const api = {
-  readKnowledgeBase : () => ipcRenderer.invoke('api:kb:read'),
+  addDirectory: () => ipcRenderer.invoke('api:addDirectory'),
 };
 
 const bridge = {

@@ -1,7 +1,7 @@
 const { BrowserWindow } = require('electron');
 const { resolve } = require('path');
 
-const createMainWindow = async () => {
+const createMainWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -10,8 +10,7 @@ const createMainWindow = async () => {
     },
   });
 
-  //mainWindow.loadFile(resolve(__dirname, './ui/index.html'));
-  return await mainWindow.loadURL('http://localhost:3000');
+  return mainWindow;
 };
 
 module.exports = {

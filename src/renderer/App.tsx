@@ -1,19 +1,18 @@
 import Box from '@mui/material/Box';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { NodeInfo } from './node-info/NodeInfo';
 import store from './store/store';
-import TreeViewGrid from './tree-view-grid/TreeViewGrid';
 import './index.css';
 import { styled } from '@mui/material';
 import { BridgeProvider } from './bridge/bridge';
+import { Sidebar } from './components/sidebar/Sidebar';
+import { Content } from './components/content/Content';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
   boxSizing: 'border-box',
   padding: theme.spacing(1),
+  height: '100%',
 }));
 
 const App: React.FC = () => {
@@ -21,8 +20,8 @@ const App: React.FC = () => {
     <Provider store={store}>
       <BridgeProvider value={window.bridge}>
         <StyledBox>
-          <TreeViewGrid />
-          <NodeInfo />
+          <Sidebar />
+          <Content />
         </StyledBox>
       </BridgeProvider>
     </Provider>
