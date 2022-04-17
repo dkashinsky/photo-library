@@ -1,8 +1,5 @@
 const { ipcMain, dialog } = require('electron');
-const { basename, join } = require('path');
-const { readdir, lstat } = require('fs/promises');
-const { Folder, File } = require('./data-layer');
-const directoryFilesWalker = require('./handlers/utils/directory-walker');
+const { addDirectory, getDirectories, processDirectory } = require('./handlers/folders');
 
 const registerEventHandlers = (mainWindow) => {
   ipcMain.handle('api:addDirectory', async () => {
@@ -11,47 +8,20 @@ const registerEventHandlers = (mainWindow) => {
     });
 
     if (!canceled) {
-      const folder = await Folder.create({ path: filePaths[0] });
-      return getDirectoryInfo(folder);
+      return await addDirectory(filePaths[0]);
     }
 
     return null;
   });
 
   ipcMain.handle('api:getDirectories', async () => {
-    const folders = await Folder.findAll();
-
-    return folders.map(getDirectoryInfo);
+    return await getDirectories();
   });
 
   ipcMain.handle('api:processDirectory', async (_, directoryId) => {
-    const folder = await Folder.findByPk(directoryId);
-    const extMatcher = /\.jpg$/i;
-
-    for await (let file of directoryFilesWalker(folder.path, extMatcher)) {
-      const { filePath, fileInfo } = file;
-      await File.create({
-        folderId: folder.id,
-        path: filePath,
-        name: basename(filePath),
-        size: fileInfo.size,
-        createDate: fileInfo.mtime,
-      });
-    }
-
-    folder.isProcessed = true;
-    await folder.save();
-
-    return getDirectoryInfo(folder);
+    return await processDirectory(directoryId);
   });
 };
-
-const getDirectoryInfo = (folder) => ({
-  id: folder.id,
-  name: basename(folder.path),
-  path: folder.path,
-  isProcessed: folder.isProcessed,
-});
 
 module.exports = {
   registerEventHandlers,
