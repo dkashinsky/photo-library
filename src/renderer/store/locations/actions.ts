@@ -2,14 +2,19 @@ import { DirectoryInfo } from "../../../preload/preload";
 import { Action, PayloadAction } from "../utils";
 
 export enum LocationsActionType {
-  AddItem = '[Location] Add Item',
+  AddItemInit = '[Location] Add Item - Init',
+  AddItemComplete = '[Location] Add Item - Complete',
   SelectItem = '[Location] Select Item',
   RequestItems = '[Location] Request Items',
   ReceiveItems = '[Location] Receive Items',
 }
 
-export const addLocationItem: PayloadAction<typeof LocationsActionType.AddItem, DirectoryInfo> = (item) => ({
-  type: LocationsActionType.AddItem,
+export const addLocationItemInit: Action<typeof LocationsActionType.AddItemInit> = () => ({
+  type: LocationsActionType.AddItemInit,
+});
+
+export const addLocationItemComplete: PayloadAction<typeof LocationsActionType.AddItemComplete, DirectoryInfo> = (item) => ({
+  type: LocationsActionType.AddItemComplete,
   payload: item,
 });
 
@@ -28,7 +33,8 @@ export const selectLocationItem: PayloadAction<typeof LocationsActionType.Select
 });
 
 export type LocationsAction =
-  | ReturnType<typeof addLocationItem>
+  | ReturnType<typeof addLocationItemInit>
+  | ReturnType<typeof addLocationItemComplete>
   | ReturnType<typeof selectLocationItem>
   | ReturnType<typeof requestLocationItems>
   | ReturnType<typeof receiveLocationItems>;

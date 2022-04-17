@@ -15,7 +15,7 @@ export default function (
   action: LocationsAction,
 ): LocationsState {
   switch (action.type) {
-    case LocationsActionType.AddItem:
+    case LocationsActionType.AddItemComplete:
       return { ...state, locations: [...state.locations, action.payload] };
     case LocationsActionType.SelectItem:
       return { ...state, selectedId: action.payload };
