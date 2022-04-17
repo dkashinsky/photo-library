@@ -13,7 +13,7 @@ export interface ElectronBridge {
   }
   api: {
     addDirectory: () => Promise<DirectoryInfo | null>;
-    processDirectory: (directoryId: string) => Promise<void>,
+    processDirectory: (directoryId: string) => Promise<DirectoryInfo>,
     getDirectories: () => Promise<DirectoryInfo[]>;
   }
 }

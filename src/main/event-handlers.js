@@ -41,6 +41,8 @@ const registerEventHandlers = (mainWindow) => {
 
     folder.isProcessed = true;
     await folder.save();
+
+    return getDirectoryInfo(folder);
   });
 };
 

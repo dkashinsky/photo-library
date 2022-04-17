@@ -7,6 +7,8 @@ export enum LocationsActionType {
   SelectItem = '[Location] Select Item',
   RequestItems = '[Location] Request Items',
   ReceiveItems = '[Location] Receive Items',
+  ProcessItemInit = '[Location] Process Item - Init',
+  ProcessItemComplete = '[Location] Process Item - Complete',
 }
 
 export const addLocationItemInit: Action<typeof LocationsActionType.AddItemInit> = () => ({
@@ -15,6 +17,16 @@ export const addLocationItemInit: Action<typeof LocationsActionType.AddItemInit>
 
 export const addLocationItemComplete: PayloadAction<typeof LocationsActionType.AddItemComplete, DirectoryInfo> = (item) => ({
   type: LocationsActionType.AddItemComplete,
+  payload: item,
+});
+
+export const processLocationItemInit: PayloadAction<typeof LocationsActionType.ProcessItemInit, string> = (id) => ({
+  type: LocationsActionType.ProcessItemInit,
+  payload: id,
+});
+
+export const processLocationItemComplete: PayloadAction<typeof LocationsActionType.ProcessItemComplete, DirectoryInfo> = (item) => ({
+  type: LocationsActionType.ProcessItemComplete,
   payload: item,
 });
 
@@ -35,6 +47,8 @@ export const selectLocationItem: PayloadAction<typeof LocationsActionType.Select
 export type LocationsAction =
   | ReturnType<typeof addLocationItemInit>
   | ReturnType<typeof addLocationItemComplete>
+  | ReturnType<typeof processLocationItemInit>
+  | ReturnType<typeof processLocationItemComplete>
   | ReturnType<typeof selectLocationItem>
   | ReturnType<typeof requestLocationItems>
   | ReturnType<typeof receiveLocationItems>;

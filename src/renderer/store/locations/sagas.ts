@@ -5,6 +5,8 @@ import {
   LocationsActionType,
   receiveLocationItems,
   addLocationItemComplete,
+  processLocationItemInit,
+  processLocationItemComplete,
 } from "./actions";
 
 function* requestCurrentLocations() {
@@ -24,7 +26,22 @@ function* watchAddLocationItemInit() {
   );
 }
 
+function* watchAddLocationItemComplete() {
+  yield takeEvery(
+    LocationsActionType.AddItemComplete,
+    function* ({ payload }: ReturnType<typeof addLocationItemComplete>) {
+      const { id, isProcessed } = payload;
+      if (!isProcessed) {
+        yield put(processLocationItemInit(id));
+        const directory: DirectoryInfo = yield call(api.processDirectory, id);
+        yield put(processLocationItemComplete(directory));
+      }
+    }
+  );
+}
+
 export default [
   requestCurrentLocations,
   watchAddLocationItemInit,
+  watchAddLocationItemComplete,
 ];

@@ -1,27 +1,68 @@
+import { combineReducers } from "redux";
 import { DirectoryInfo } from "../../../preload/preload";
 import { LocationsAction, LocationsActionType } from "./actions";
 
+type ItemsById<T> = Record<string, T | undefined>;
+
 type LocationsState = {
   locations: DirectoryInfo[];
-  selectedId?: string;
+  selectedId: string | null;
+  processById: ItemsById<boolean>;
 }
 
 const INITIAL_STATE: LocationsState = {
   locations: [],
+  selectedId: null,
+  processById: {},
 };
 
-export default function (
-  state: LocationsState = INITIAL_STATE,
+function locationsReducer(
+  state: DirectoryInfo[] = INITIAL_STATE.locations,
   action: LocationsAction,
-): LocationsState {
+): DirectoryInfo[] {
   switch (action.type) {
     case LocationsActionType.AddItemComplete:
-      return { ...state, locations: [...state.locations, action.payload] };
-    case LocationsActionType.SelectItem:
-      return { ...state, selectedId: action.payload };
+      return [...state, action.payload];
     case LocationsActionType.ReceiveItems:
-      return { ...state, locations: action.payload };
+      return [...action.payload];
+    case LocationsActionType.ProcessItemComplete:
+      const itemIndex = state.findIndex(({ id }) => id === action.payload.id);
+      const newState = [...state];
+      newState[itemIndex] = action.payload;
+      return newState;
     default:
       return state;
   }
 }
+
+function selectedIdReducer(
+  state: string | null = INITIAL_STATE.selectedId,
+  action: LocationsAction,
+): string | null {
+  switch (action.type) {
+    case LocationsActionType.SelectItem:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+function processByIdReducer(
+  state: ItemsById<boolean> = INITIAL_STATE.processById,
+  action: LocationsAction,
+): ItemsById<boolean> {
+  switch (action.type) {
+    case LocationsActionType.ProcessItemInit:
+      return { ...state, [action.payload]: true };
+    case LocationsActionType.ProcessItemComplete:
+      return { ...state, [action.payload.id]: false };
+    default:
+      return state;
+  }
+}
+
+export default combineReducers({
+  locations: locationsReducer,
+  selectedId: selectedIdReducer,
+  processById: processByIdReducer,
+});
