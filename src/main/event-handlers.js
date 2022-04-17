@@ -2,6 +2,7 @@ const { ipcMain, dialog } = require('electron');
 const { basename, join } = require('path');
 const { readdir, lstat } = require('fs/promises');
 const { Folder, File } = require('./data-layer');
+const directoryFilesWalker = require('./handlers/utils/directory-walker');
 
 const registerEventHandlers = (mainWindow) => {
   ipcMain.handle('api:addDirectory', async () => {
@@ -25,20 +26,17 @@ const registerEventHandlers = (mainWindow) => {
 
   ipcMain.handle('api:processDirectory', async (_, directoryId) => {
     const folder = await Folder.findByPk(directoryId);
-    const files = await readdir(folder.path);
+    const extMatcher = /\.jpg$/i;
 
-    for (let file of files) {
-      const filePath = join(folder.path, file);
-      const fileInfo = await lstat(filePath);
-      if (fileInfo.isFile()) {
-        await File.create({
-          folderId: folder.id,
-          path: filePath,
-          name: basename(filePath),
-          size: fileInfo.size,
-          createDate: fileInfo.mtime,
-        });
-      }
+    for await (let file of directoryFilesWalker(folder.path, extMatcher)) {
+      const { filePath, fileInfo } = file;
+      await File.create({
+        folderId: folder.id,
+        path: filePath,
+        name: basename(filePath),
+        size: fileInfo.size,
+        createDate: fileInfo.mtime,
+      });
     }
 
     folder.isProcessed = true;
