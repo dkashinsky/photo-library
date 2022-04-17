@@ -1,10 +1,9 @@
-const { Sequelize, DataTypes } = require('sequelize');
 
-const defineFolder = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   return sequelize.define('Folder', {
     id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true
     },
@@ -12,9 +11,10 @@ const defineFolder = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-  });
-};
-
-module.exports = {
-  defineFolder,
+    isProcessed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
+    },
+  }, { timestamps: false });
 };

@@ -1,12 +1,18 @@
 
 const { Sequelize, DataTypes } = require('sequelize');
-const { defineFolder } = require('./folder');
+const folderInitializer = require('./folder');
+const fileInitializer = require('./file');
 
 const sequelize = new Sequelize('sqlite::memory:');
-const Folder = defineFolder(sequelize);
+
+const Folder = folderInitializer(sequelize, DataTypes);
+const File = fileInitializer(sequelize, DataTypes);
+
+Folder.hasMany(File, { foreignKey: 'folderId' });
 
 sequelize.sync();
 
 module.exports = {
   Folder,
+  File,
 };

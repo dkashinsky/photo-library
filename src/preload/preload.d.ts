@@ -2,6 +2,7 @@ export type DirectoryInfo = {
   id: string;
   name: string;
   path: string;
+  isProcessed: boolean;
 }
 
 export interface ElectronBridge {
@@ -12,6 +13,7 @@ export interface ElectronBridge {
   }
   api: {
     addDirectory: () => Promise<DirectoryInfo | null>;
+    processDirectory: (directoryId: string) => Promise<void>,
     getDirectories: () => Promise<DirectoryInfo[]>;
   }
 }
