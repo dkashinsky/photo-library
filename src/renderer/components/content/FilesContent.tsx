@@ -20,8 +20,8 @@ export const FilesContent = ({ folderId }: FilesContentProps) => {
   }, [folderId, files, loading]);
 
   return (
-    <Box p={1} >
-      <ImageList>
+    <Box p={1} sx={{ maxHeight: '100%', overflow: 'auto' }}>
+      <ImageList sx={{ height: '100%' }}>
         {files.map((item) => (
           <ImageListItem key={item.id}>
             <img

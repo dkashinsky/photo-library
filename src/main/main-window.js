@@ -7,6 +7,7 @@ const createMainWindow = () => {
     height: 600,
     webPreferences: {
       preload: resolve(__dirname, '../preload/index.js'),
+      webSecurity: false, // TODO: this is only to display images. need to find a secure way
     },
   });
 
