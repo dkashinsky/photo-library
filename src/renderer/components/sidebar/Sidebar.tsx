@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Box, IconButton, Paper, styled, Tooltip, Typography } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { BridgeContext } from '../../bridge/bridge';
@@ -6,7 +6,7 @@ import { NoLocationsFound } from './NoLocationsFound';
 import { Locations } from './Locations';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLocations } from '../../store/locations/selectors';
-import { addLocationItem, receiveLocationItems } from '../../store/locations/actions';
+import { addLocationItem } from '../../store/locations/actions';
 
 const StyledPaper = styled(Paper)({
   display: 'flex',
@@ -24,13 +24,6 @@ export const Sidebar = () => {
       if (directory) {
         dispatch(addLocationItem(directory));
       }
-    }
-  }, [bridge, dispatch]);
-
-  useEffect(() => {
-    if (bridge) {
-      bridge.api.getDirectories()
-        .then(directories => dispatch(receiveLocationItems(directories)));
     }
   }, [bridge, dispatch]);
 
