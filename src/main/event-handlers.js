@@ -1,5 +1,6 @@
 const { ipcMain, dialog } = require('electron');
 const { addDirectory, getDirectories, processDirectory } = require('./handlers/folders');
+const { getFiles } = require('./handlers/files');
 
 const registerEventHandlers = (mainWindow) => {
   ipcMain.handle('api:addDirectory', async () => {
@@ -20,6 +21,10 @@ const registerEventHandlers = (mainWindow) => {
 
   ipcMain.handle('api:processDirectory', async (_, directoryId) => {
     return await processDirectory(directoryId);
+  });
+
+  ipcMain.handle('api:getFiles', async (_, directoryId) => {
+    return await getFiles(directoryId);
   });
 };
 

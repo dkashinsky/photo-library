@@ -14,6 +14,7 @@ const api = {
   addDirectory: () => ipcRenderer.invoke('api:addDirectory'),
   processDirectory: (directoryId) => ipcRenderer.invoke('api:processDirectory', directoryId),
   getDirectories: () => ipcRenderer.invoke('api:getDirectories'),
+  getFiles: (directoryId) => ipcRenderer.invoke('api:getFiles', directoryId),
 };
 
 const bridge = {

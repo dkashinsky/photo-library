@@ -5,6 +5,15 @@ export type DirectoryInfo = {
   isProcessed: boolean;
 }
 
+export type FileInfo = {
+  id: number;
+  folderId: string;
+  name: string;
+  path: string;
+  size: number;
+  createDate: string;
+}
+
 export interface ElectronBridge {
   versions: {
     chrome: string;
@@ -15,6 +24,7 @@ export interface ElectronBridge {
     addDirectory: () => Promise<DirectoryInfo | null>;
     processDirectory: (directoryId: string) => Promise<DirectoryInfo>,
     getDirectories: () => Promise<DirectoryInfo[]>;
+    getFiles: (directoryId: string) => Promise<FileInfo[]>;
   }
 }
 
