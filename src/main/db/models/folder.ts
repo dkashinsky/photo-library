@@ -1,39 +1,18 @@
-import {
-  CreationOptional,
-  DataTypes,
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-} from 'sequelize';
-import { sequelize } from '../sequelize';
+import { Table, Column, Model, DataType } from 'sequelize-typescript'
 
-export class Folder extends Model<
-  InferAttributes<Folder>,
-  InferCreationAttributes<Folder>
-> {
-  declare id: CreationOptional<string>;
-  declare path: string;
-  declare isProcessed: CreationOptional<boolean>;
+@Table({ timestamps: false })
+export class Folder extends Model {
+  @Column({
+    type: DataType.UUID,
+    primaryKey: true,
+    allowNull: false,
+    defaultValue: DataType.UUIDV4,
+  })
+  id!: string;
+
+  @Column({ allowNull: false })
+  path!: string;
+
+  @Column({ allowNull: false, defaultValue: false })
+  isProcessed!: boolean;
 }
-
-Folder.init({
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    allowNull: false,
-    primaryKey: true
-  },
-  path: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  isProcessed: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-    allowNull: false,
-  },
-}, {
-  tableName: 'folders',
-  timestamps: false,
-  sequelize,
-});

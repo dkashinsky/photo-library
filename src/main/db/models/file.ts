@@ -1,52 +1,25 @@
-import {
-  CreationOptional,
-  DataTypes,
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-} from 'sequelize';
-import { sequelize } from '../sequelize';
+import { Table, Column, Model, PrimaryKey, ForeignKey } from 'sequelize-typescript'
+import { Folder } from './folder';
 
-export class File extends Model<
-  InferAttributes<File>,
-  InferCreationAttributes<File>
-> {
-  declare id: CreationOptional<number>;
-  declare folderId: string;
-  declare path: string;
-  declare name: string;
-  declare size: number;
-  declare createDate: Date;
+@Table({ timestamps: false })
+export class File extends Model {
+  @PrimaryKey
+  @Column
+  id!: number;
+
+  @ForeignKey(() => Folder)
+  @Column({ allowNull: false })
+  folderId!: string;
+
+  @Column({ allowNull: false })
+  path!: string;
+
+  @Column({ allowNull: false })
+  name!: string;
+
+  @Column({ allowNull: false })
+  size!: number;
+
+  @Column({ allowNull: false })
+  createDate!: Date;
 }
-
-File.init({
-  id: {
-    primaryKey: true,
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-  },
-  folderId: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  path: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  size: {
-    type: DataTypes.NUMBER,
-    allowNull: false,
-  },
-  createDate: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  }
-}, {
-  tableName: 'files',
-  timestamps: false,
-  sequelize
-});
