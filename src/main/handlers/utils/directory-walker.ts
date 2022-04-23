@@ -7,7 +7,7 @@ export type FileInfo = {
   fileInfo: Stats;
 }
 
-async function* directoryFilesWalker(path: string, ext: RegExp): any /*Generator<FileInfo, void, void>*/ {
+async function* directoryFilesWalker(path: string, ext: RegExp): AsyncGenerator<FileInfo, void, void> {
   const dirItems = await readdir(path);
 
   for (let item of dirItems) {
