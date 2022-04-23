@@ -1,7 +1,7 @@
-const { BrowserWindow } = require('electron');
-const { resolve } = require('path');
+import { BrowserWindow } from 'electron';
+import { resolve } from 'path';
 
-const createMainWindow = () => {
+export const createMainWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -12,8 +12,4 @@ const createMainWindow = () => {
   });
 
   return mainWindow;
-};
-
-module.exports = {
-  createMainWindow,
 };

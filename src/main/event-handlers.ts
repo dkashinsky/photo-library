@@ -1,8 +1,8 @@
-const { ipcMain, dialog } = require('electron');
-const { addDirectory, getDirectories, processDirectory } = require('./handlers/folders');
-const { getFiles } = require('./handlers/files');
+import { ipcMain, dialog, BrowserWindow } from 'electron';
+import { addDirectory, getDirectories, processDirectory } from './handlers/folders';
+import { getFiles } from './handlers/files';
 
-const registerEventHandlers = (mainWindow) => {
+export const registerEventHandlers = (mainWindow: BrowserWindow) => {
   ipcMain.handle('api:addDirectory', async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
       properties: ['openDirectory'],
@@ -26,8 +26,4 @@ const registerEventHandlers = (mainWindow) => {
   ipcMain.handle('api:getFiles', async (_, directoryId) => {
     return await getFiles(directoryId);
   });
-};
-
-module.exports = {
-  registerEventHandlers,
 };

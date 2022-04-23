@@ -5,8 +5,9 @@
   "description": "Electron app to easily manage photographs and find people",
   "scripts": {
     "start:web": "vite serve ./src/renderer",
-    "start:shell": "electron ./src/main/index.js",
+    "start:shell": "npm run build:shell && electron ./dist/main/index.js",
     "start": "npm-run-all --parallel start:*",
+    "build:shell": "tsc -p electron.tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -1,29 +1,33 @@
-const { basename } = require('path');
-const { Folder, File } = require('../data-layer');
-const directoryFilesWalker = require('./utils/directory-walker');
+import { basename } from 'path';
+import { Folder, File } from '../db';
+import directoryFilesWalker from './utils/directory-walker';
 
-const getDirectoryInfo = (folder) => ({
+const getDirectoryInfo = (folder: Folder) => ({
   id: folder.id,
   name: basename(folder.path),
   path: folder.path,
   isProcessed: folder.isProcessed,
 });
 
-const addDirectory = async (path) => {
+export const addDirectory = async (path: string) => {
   const folder = await Folder.create({ path });
 
   return getDirectoryInfo(folder);
 };
 
-const getDirectories = async () => {
+export const getDirectories = async () => {
   const folders = await Folder.findAll();
 
   return folders.map(getDirectoryInfo);
 };
 
-const processDirectory = async (directoryId) => {
+export const processDirectory = async (directoryId: string) => {
   const folder = await Folder.findByPk(directoryId);
   const extMatcher = /\.jpg$/i;
+
+  if (!folder) {
+    throw new Error('No Directory Found...');
+  }
 
   for await (let file of directoryFilesWalker(folder.path, extMatcher)) {
     const { filePath, fileInfo } = file;
@@ -40,10 +44,4 @@ const processDirectory = async (directoryId) => {
   await folder.save();
 
   return getDirectoryInfo(folder);
-};
-
-module.exports = {
-  addDirectory,
-  getDirectories,
-  processDirectory,
 };

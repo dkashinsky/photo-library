@@ -1,7 +1,7 @@
-const { contextBridge, ipcRenderer } = require('electron');
+import { contextBridge, ipcRenderer } from 'electron';
 
 const getVersions = () => {
-  const versions = {};
+  const versions: Record<string, string | undefined> = {};
 
   for (const type of ['chrome', 'node', 'electron']) {
     versions[type] = process.versions[type];
@@ -12,9 +12,9 @@ const getVersions = () => {
 
 const api = {
   addDirectory: () => ipcRenderer.invoke('api:addDirectory'),
-  processDirectory: (directoryId) => ipcRenderer.invoke('api:processDirectory', directoryId),
+  processDirectory: (directoryId: string) => ipcRenderer.invoke('api:processDirectory', directoryId),
   getDirectories: () => ipcRenderer.invoke('api:getDirectories'),
-  getFiles: (directoryId) => ipcRenderer.invoke('api:getFiles', directoryId),
+  getFiles: (directoryId: string) => ipcRenderer.invoke('api:getFiles', directoryId),
 };
 
 const bridge = {

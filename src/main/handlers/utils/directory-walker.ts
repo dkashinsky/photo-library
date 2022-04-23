@@ -1,7 +1,13 @@
-const { join, extname } = require('path');
-const { readdir, lstat } = require('fs/promises');
+import { join, extname } from 'path';
+import { readdir, lstat } from 'fs/promises';
+import type { Stats } from 'original-fs';
 
-async function* directoryFilesWalker(path, ext) {
+export type FileInfo = {
+  filePath: string;
+  fileInfo: Stats;
+}
+
+async function* directoryFilesWalker(path: string, ext: RegExp): any /*Generator<FileInfo, void, void>*/ {
   const dirItems = await readdir(path);
 
   for (let item of dirItems) {
@@ -19,4 +25,4 @@ async function* directoryFilesWalker(path, ext) {
   }
 }
 
-module.exports = directoryFilesWalker;
+export default directoryFilesWalker;
