@@ -1,8 +1,15 @@
 import React, { useEffect } from 'react';
-import { Box, ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectFiles, selectFilesLoading } from '../../store/files/selectors';
 import { getFilesInit } from '../../store/files/actions';
+import { FileCard } from './FileCard';
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  padding: theme.spacing(0.5),
+}))
 
 export type FilesContentProps = {
   folderId: string;
@@ -20,23 +27,13 @@ export const FilesContent = ({ folderId }: FilesContentProps) => {
   }, [folderId, files, loading]);
 
   return (
-    <Box p={1} sx={{ maxHeight: '100%', overflow: 'auto' }}>
-      <ImageList sx={{ height: '100%' }}>
-        {files.map((item) => (
-          <ImageListItem key={item.id}>
-            <img
-              src={item.path}
-              alt={item.name}
-              loading="lazy"
-            />
-            <ImageListItemBar
-              title={item.name}
-              subtitle={<span>at: {item.createDate}</span>}
-              position="below"
-            />
-          </ImageListItem>
-        ))}
-      </ImageList>
-    </Box >
+    <StyledBox>
+      {files.map((item) => (
+        <FileCard
+          key={item.id}
+          fileInfo={item}
+        />
+      ))}
+    </StyledBox >
   );
 };

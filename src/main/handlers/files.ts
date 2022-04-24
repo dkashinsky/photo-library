@@ -6,7 +6,7 @@ const getFileInfo = (file: File) => ({
   name: file.name,
   path: file.path,
   size: file.size,
-  createDate: file.createDate.toISOString(),
+  createDate: file.createDate,
 });
 
 export const getFiles = async (folderId: string) => {

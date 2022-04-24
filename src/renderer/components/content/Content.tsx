@@ -44,7 +44,7 @@ export const Content = () => {
   }
 
   return (
-    <Paper sx={{ flex: 1 }}>
+    <Paper sx={{ flex: 1, overflow: 'auto' }}>
       <FilesContent folderId={selectedId} />
     </Paper>
   );

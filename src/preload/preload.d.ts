@@ -11,7 +11,7 @@ export type FileInfo = {
   name: string;
   path: string;
   size: number;
-  createDate: string;
+  createDate: Date;
 }
 
 export interface ElectronBridge {
