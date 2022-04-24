@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { Box, styled } from "@mui/material";
+import { Box, LinearProgress, styled, Typography } from "@mui/material";
 import { useDispatch, useSelector } from 'react-redux';
 import { selectFiles, selectFilesLoading } from '../../store/files/selectors';
 import { getFilesInit } from '../../store/files/actions';
 import { FileCard } from './FileCard';
+import { selectLocationsById } from '../../store/locations/selectors';
 
 const StyledBox = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -16,19 +17,23 @@ export type FilesContentProps = {
 }
 
 export const FilesContent = ({ folderId }: FilesContentProps) => {
+  const folder = useSelector(selectLocationsById)[folderId];
   const files = useSelector(selectFiles);
-  const loading = useSelector(selectFilesLoading);
+  const filesLoading = useSelector(selectFilesLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!files.length && !loading) {
+    if (folder?.isProcessed) {
       dispatch(getFilesInit(folderId));
     }
-  }, [folderId, files, loading]);
+  }, [folder]);
 
   return (
     <StyledBox>
-      {files.map((item) => (
+      {filesLoading && (
+        <LinearProgress sx={{ width: '100%' }} />
+      )}
+      {!filesLoading && files.map((item) => (
         <FileCard
           key={item.id}
           fileInfo={item}

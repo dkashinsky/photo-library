@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Avatar, CircularProgress, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import FolderIcon from '@mui/icons-material/Folder';
 import { DirectoryInfo } from '../../../preload/preload';
@@ -14,9 +14,6 @@ export const Locations = ({ folders }: LocationsProps) => {
   const dispatch = useDispatch();
   const selectedId = useSelector(selectSelectedLocationId);
   const processById = useSelector(selectProcessById);
-  const selectItem = useCallback((id: string) => {
-    dispatch(selectLocationItem(id));
-  }, []);
 
   return (
     <List dense>
@@ -24,7 +21,7 @@ export const Locations = ({ folders }: LocationsProps) => {
         <ListItem key={i} disablePadding>
           <ListItemButton
             selected={selectedId === folder.id}
-            onClick={() => selectItem(folder.id)}
+            onClick={() => dispatch(selectLocationItem(folder.id))}
           >
             <ListItemAvatar>
               <Avatar>

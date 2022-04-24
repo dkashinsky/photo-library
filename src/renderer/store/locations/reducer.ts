@@ -1,8 +1,7 @@
 import { combineReducers } from "redux";
 import { DirectoryInfo } from "../../../preload/preload";
+import { ItemsById } from "../utils";
 import { LocationsAction, LocationsActionType } from "./actions";
-
-type ItemsById<T> = Record<string, T | undefined>;
 
 type LocationsState = {
   locations: DirectoryInfo[];
