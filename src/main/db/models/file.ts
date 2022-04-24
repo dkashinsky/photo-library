@@ -1,8 +1,20 @@
 import { Table, Column, Model, PrimaryKey, ForeignKey } from 'sequelize-typescript'
+import { Optional } from 'sequelize/types';
 import { Folder } from './folder';
 
+type FileAttributes = {
+  id: number;
+  folderId: string;
+  path: string;
+  name: string;
+  size: number;
+  createDate: Date;
+}
+
+type FileCreationAttributes = Optional<FileAttributes, 'id'>
+
 @Table({ timestamps: false })
-export class File extends Model {
+export class File extends Model<FileAttributes, FileCreationAttributes> {
   @PrimaryKey
   @Column
   id!: number;
