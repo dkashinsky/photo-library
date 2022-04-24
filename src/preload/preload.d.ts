@@ -6,7 +6,7 @@ export type DirectoryInfo = {
 }
 
 export type FileInfo = {
-  id: number;
+  id: string;
   folderId: string;
   name: string;
   path: string;

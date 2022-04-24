@@ -5,11 +5,13 @@ import { FilesAction, FilesActionType } from "./actions";
 type FilesState = {
   files: FileInfo[];
   isLoading: boolean;
+  selectedId: string | null;
 }
 
 const INITIAL_STATE: FilesState = {
   files: [],
   isLoading: false,
+  selectedId: null,
 };
 
 function filesReducer(
@@ -40,7 +42,20 @@ function isLoadingReducer(
   }
 }
 
+function selectedIdReducer(
+  state: string | null = INITIAL_STATE.selectedId,
+  action: FilesAction,
+): string | null {
+  switch (action.type) {
+    case FilesActionType.SelectItem:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   files: filesReducer,
   isLoading: isLoadingReducer,
+  selectedId: selectedIdReducer,
 });

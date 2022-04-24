@@ -5,6 +5,7 @@ export enum FilesActionType {
   ResetFiles = '[Files] Reset',
   GetFilesInit = '[Files] Get Files - Init',
   GetFilesComplete = '[Files] Get Files - Complete',
+  SelectItem = '[Files] Select Item',
 }
 
 export const resetFiles: Action<typeof FilesActionType.ResetFiles> = () => ({
@@ -21,7 +22,13 @@ export const getFilesComplete: PayloadAction<typeof FilesActionType.GetFilesComp
   payload: item,
 });
 
+export const selectFileId: PayloadAction<typeof FilesActionType.SelectItem, FileInfo['id'] | null> = (id) => ({
+  type: FilesActionType.SelectItem,
+  payload: id,
+});
+
 export type FilesAction =
+  | ReturnType<typeof selectFileId>
   | ReturnType<typeof resetFiles>
   | ReturnType<typeof getFilesInit>
   | ReturnType<typeof getFilesComplete>;

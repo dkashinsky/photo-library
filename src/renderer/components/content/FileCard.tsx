@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, CardActionArea, CardHeader, CardMedia, IconButton, styled, Typography } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { FileInfo } from "../../../preload/preload";
+import { useDispatch } from 'react-redux';
+import { selectFileId } from '../../store/files/actions';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -12,11 +14,13 @@ export type FileCardProps = {
 }
 
 export const FileCard = ({ fileInfo }: FileCardProps) => {
-  const { name, path, createDate } = fileInfo;
+  const dispatch = useDispatch();
+  const { id, name, path, createDate } = fileInfo;
+  const clickHandler = () => dispatch(selectFileId(id));
 
   return (
     <StyledCard>
-      <CardActionArea>
+      <CardActionArea onClick={clickHandler}>
         <CardMedia
           component="img"
           height="140"

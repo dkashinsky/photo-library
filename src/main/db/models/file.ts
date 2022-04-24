@@ -1,9 +1,9 @@
-import { Table, Column, Model, PrimaryKey, ForeignKey } from 'sequelize-typescript'
+import { Table, Column, Model, ForeignKey, DataType } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types';
 import { Folder } from './folder';
 
 type FileAttributes = {
-  id: number;
+  id: string;
   folderId: string;
   path: string;
   name: string;
@@ -15,9 +15,13 @@ type FileCreationAttributes = Optional<FileAttributes, 'id'>
 
 @Table({ timestamps: false })
 export class File extends Model<FileAttributes, FileCreationAttributes> {
-  @PrimaryKey
-  @Column
-  id!: number;
+  @Column({
+    type: DataType.UUID,
+    primaryKey: true,
+    allowNull: false,
+    defaultValue: DataType.UUIDV4,
+  })
+  id!: string;
 
   @ForeignKey(() => Folder)
   @Column({ allowNull: false })
