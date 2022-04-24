@@ -1,4 +1,4 @@
-import { DirectoryInfo } from "../../../preload/preload";
+import { DirectoryInfoDTO } from "../../../preload/preload";
 import { Action, PayloadAction } from "../utils";
 
 export enum LocationsActionType {
@@ -15,7 +15,7 @@ export const addLocationItemInit: Action<typeof LocationsActionType.AddItemInit>
   type: LocationsActionType.AddItemInit,
 });
 
-export const addLocationItemComplete: PayloadAction<typeof LocationsActionType.AddItemComplete, DirectoryInfo> = (item) => ({
+export const addLocationItemComplete: PayloadAction<typeof LocationsActionType.AddItemComplete, DirectoryInfoDTO> = (item) => ({
   type: LocationsActionType.AddItemComplete,
   payload: item,
 });
@@ -25,7 +25,7 @@ export const processLocationItemInit: PayloadAction<typeof LocationsActionType.P
   payload: id,
 });
 
-export const processLocationItemComplete: PayloadAction<typeof LocationsActionType.ProcessItemComplete, DirectoryInfo> = (item) => ({
+export const processLocationItemComplete: PayloadAction<typeof LocationsActionType.ProcessItemComplete, DirectoryInfoDTO> = (item) => ({
   type: LocationsActionType.ProcessItemComplete,
   payload: item,
 });
@@ -34,7 +34,7 @@ export const requestLocationItems: Action<typeof LocationsActionType.RequestItem
   type: LocationsActionType.RequestItems,
 });
 
-export const receiveLocationItems: PayloadAction<typeof LocationsActionType.ReceiveItems, DirectoryInfo[]> = (items) => ({
+export const receiveLocationItems: PayloadAction<typeof LocationsActionType.ReceiveItems, DirectoryInfoDTO[]> = (items) => ({
   type: LocationsActionType.ReceiveItems,
   payload: items,
 });

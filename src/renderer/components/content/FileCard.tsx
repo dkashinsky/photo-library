@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardActionArea, CardHeader, CardMedia, IconButton, styled, Typography } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { FileInfo } from "../../../preload/preload";
+import { FileInfoDTO } from "../../../preload/preload";
 import { useDispatch } from 'react-redux';
 import { selectFileId } from '../../store/files/actions';
 
@@ -10,7 +10,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }));
 
 export type FileCardProps = {
-  fileInfo: FileInfo;
+  fileInfo: FileInfoDTO;
 }
 
 export const FileCard = ({ fileInfo }: FileCardProps) => {

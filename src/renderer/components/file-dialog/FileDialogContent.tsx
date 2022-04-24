@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, CardMedia, Typography } from "@mui/material";
-import { FileInfo } from '../../../preload/preload';
+import { FileInfoDTO } from '../../../preload/preload';
 import { BridgeContext } from '../../bridge/bridge';
 
 export type FileDialogContent = {
@@ -9,10 +9,18 @@ export type FileDialogContent = {
 
 export const FileDialogContent = ({ fileId }: FileDialogContent) => {
   const bridge = useContext(BridgeContext);
-  const [file, setFile] = useState<FileInfo | null>(null);
+  const [file, setFile] = useState<FileInfoDTO | null>(null);
 
   useEffect(() => {
-    bridge?.api.getFile(fileId).then(setFile);
+    let destroyed = false;
+
+    bridge?.api.getFile(fileId).then((file) => {
+      if (!destroyed) {
+        setFile(file);
+      }
+    });
+
+    return () => { destroyed = true };
   }, [bridge, fileId]);
 
   if (!file) {

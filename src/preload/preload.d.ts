@@ -1,11 +1,11 @@
-export type DirectoryInfo = {
+export type DirectoryInfoDTO = {
   id: string;
   name: string;
   path: string;
   isProcessed: boolean;
 }
 
-export type FileInfo = {
+export type FileInfoDTO = {
   id: string;
   folderId: string;
   name: string;
@@ -15,7 +15,7 @@ export type FileInfo = {
   isProcessed: boolean;
 }
 
-export type FaceArea = {
+export type FaceAreaDTO = {
   id: string;
   x0: number;
   y0: number;
@@ -23,8 +23,8 @@ export type FaceArea = {
   y1: number;
 }
 
-export type FileInfoExtended = FileInfo & {
-  faceAreas: FaceArea[];
+export type FileInfoExtendedDTO = FileInfoDTO & {
+  faceAreas: FaceAreaDTO[];
 }
 
 export interface ElectronBridge {
@@ -34,12 +34,12 @@ export interface ElectronBridge {
     electron: string;
   }
   api: {
-    addDirectory: () => Promise<DirectoryInfo | null>;
-    processDirectory: (directoryId: string) => Promise<DirectoryInfo>;
-    getDirectories: () => Promise<DirectoryInfo[]>;
-    getFiles: (directoryId: string) => Promise<FileInfo[]>;
-    getFile: (fileId: string) => Promise<FileInfoExtended>;
-    processFile: (fileId: string) => Promise<FileInfoExtended>;
+    addDirectory: () => Promise<DirectoryInfoDTO | null>;
+    processDirectory: (directoryId: string) => Promise<DirectoryInfoDTO>;
+    getDirectories: () => Promise<DirectoryInfoDTO[]>;
+    getFiles: (directoryId: string) => Promise<FileInfoDTO[]>;
+    getFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
+    processFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
   }
 }
 

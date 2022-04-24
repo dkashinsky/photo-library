@@ -1,4 +1,4 @@
-import { FileInfo } from "../../../preload/preload";
+import { FileInfoDTO } from "../../../preload/preload";
 import { Action, PayloadAction } from "../utils";
 
 export enum FilesActionType {
@@ -17,12 +17,12 @@ export const getFilesInit: PayloadAction<typeof FilesActionType.GetFilesInit, st
   payload: id,
 });
 
-export const getFilesComplete: PayloadAction<typeof FilesActionType.GetFilesComplete, FileInfo[]> = (item) => ({
+export const getFilesComplete: PayloadAction<typeof FilesActionType.GetFilesComplete, FileInfoDTO[]> = (item) => ({
   type: FilesActionType.GetFilesComplete,
   payload: item,
 });
 
-export const selectFileId: PayloadAction<typeof FilesActionType.SelectItem, FileInfo['id'] | null> = (id) => ({
+export const selectFileId: PayloadAction<typeof FilesActionType.SelectItem, FileInfoDTO['id'] | null> = (id) => ({
   type: FilesActionType.SelectItem,
   payload: id,
 });

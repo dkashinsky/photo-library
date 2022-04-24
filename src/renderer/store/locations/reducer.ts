@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
-import { DirectoryInfo } from "../../../preload/preload";
+import { DirectoryInfoDTO } from "../../../preload/preload";
 import { ItemsById } from "../utils";
 import { LocationsAction, LocationsActionType } from "./actions";
 
 type LocationsState = {
-  locations: DirectoryInfo[];
+  locations: DirectoryInfoDTO[];
   selectedId: string | null;
   processById: ItemsById<boolean>;
 }
@@ -16,9 +16,9 @@ const INITIAL_STATE: LocationsState = {
 };
 
 function locationsReducer(
-  state: DirectoryInfo[] = INITIAL_STATE.locations,
+  state: DirectoryInfoDTO[] = INITIAL_STATE.locations,
   action: LocationsAction,
-): DirectoryInfo[] {
+): DirectoryInfoDTO[] {
   switch (action.type) {
     case LocationsActionType.AddItemComplete:
       return [...state, action.payload];

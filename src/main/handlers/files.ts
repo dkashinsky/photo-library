@@ -27,10 +27,8 @@ export const getFiles = async (folderId: string) => {
 
 export const getFile = async (fileId: string) => {
   const file = await File.findByPk(fileId, {
-    include: FaceArea,
+    include: [FaceArea],
   });
-
-  console.log(file);
 
   if (!file) {
     throw new Error('No File Found...');
@@ -42,7 +40,7 @@ export const getFile = async (fileId: string) => {
 
 export const processFile = async (fileId: string) => {
   const file = await File.findByPk(fileId, {
-    include: FaceArea,
+    include: [FaceArea],
   });
 
   if (!file) {

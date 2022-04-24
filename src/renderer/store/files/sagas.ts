@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { FileInfo } from "../../../preload/preload";
+import { FileInfoDTO } from "../../../preload/preload";
 import api from "../../bridge/api";
 import {
   FilesActionType,
@@ -11,7 +11,7 @@ function* watchGetFilesInit() {
   yield takeEvery(
     FilesActionType.GetFilesInit,
     function* ({ payload: directoryId }: ReturnType<typeof getFilesInit>) {
-      const files: FileInfo[] = yield call(api.getFiles, directoryId);
+      const files: FileInfoDTO[] = yield call(api.getFiles, directoryId);
       yield put(getFilesComplete(files));
     }
   );

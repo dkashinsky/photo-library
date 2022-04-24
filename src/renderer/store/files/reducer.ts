@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import { FileInfo } from "../../../preload/preload";
+import { FileInfoDTO } from "../../../preload/preload";
 import { FilesAction, FilesActionType } from "./actions";
 
 type FilesState = {
-  files: FileInfo[];
+  files: FileInfoDTO[];
   isLoading: boolean;
   selectedId: string | null;
 }
@@ -15,9 +15,9 @@ const INITIAL_STATE: FilesState = {
 };
 
 function filesReducer(
-  state: FileInfo[] = INITIAL_STATE.files,
+  state: FileInfoDTO[] = INITIAL_STATE.files,
   action: FilesAction,
-): FileInfo[] {
+): FileInfoDTO[] {
   switch (action.type) {
     case FilesActionType.ResetFiles:
       return INITIAL_STATE.files;

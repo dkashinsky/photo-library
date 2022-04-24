@@ -1,13 +1,13 @@
 import React from 'react';
 import { Avatar, CircularProgress, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import FolderIcon from '@mui/icons-material/Folder';
-import { DirectoryInfo } from '../../../preload/preload';
+import { DirectoryInfoDTO } from '../../../preload/preload';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectLocationItem } from '../../store/locations/actions';
 import { selectProcessById, selectSelectedLocationId } from '../../store/locations/selectors';
 
 export type LocationsProps = {
-  folders: DirectoryInfo[];
+  folders: DirectoryInfoDTO[];
 }
 
 export const Locations = ({ folders }: LocationsProps) => {
