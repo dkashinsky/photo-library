@@ -2,7 +2,7 @@ import { basename } from 'path';
 import { Folder, File } from '../db';
 import directoryFilesWalker from './utils/directory-walker';
 
-const getDirectoryInfo = (folder: Folder) => ({
+const getDirectoryInfoDTO = (folder: Folder) => ({
   id: folder.id,
   name: basename(folder.path),
   path: folder.path,
@@ -12,13 +12,13 @@ const getDirectoryInfo = (folder: Folder) => ({
 export const addDirectory = async (path: string) => {
   const folder = await Folder.create({ path });
 
-  return getDirectoryInfo(folder);
+  return getDirectoryInfoDTO(folder);
 };
 
 export const getDirectories = async () => {
   const folders = await Folder.findAll();
 
-  return folders.map(getDirectoryInfo);
+  return folders.map(getDirectoryInfoDTO);
 };
 
 export const processDirectory = async (directoryId: string) => {
@@ -43,5 +43,5 @@ export const processDirectory = async (directoryId: string) => {
   folder.isProcessed = true;
   await folder.save();
 
-  return getDirectoryInfo(folder);
+  return getDirectoryInfoDTO(folder);
 };

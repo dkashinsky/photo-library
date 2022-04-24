@@ -1,6 +1,7 @@
-import { File } from '../db';
+import { FaceArea, File } from '../db';
+import { getFaceAreaDTO } from './face-areas';
 
-const getFileInfo = (file: File) => ({
+const getFileInfoDTO = (file: File) => ({
   id: file.id,
   folderId: file.folderId,
   name: file.name,
@@ -10,28 +11,39 @@ const getFileInfo = (file: File) => ({
   isProcessed: file.isProcessed,
 });
 
+const getFileInfoExtendedDTO = (file: File) => ({
+  ...getFileInfoDTO(file),
+  faceAreas: file.faceAreas.map(getFaceAreaDTO)
+});
+
 export const getFiles = async (folderId: string) => {
   const files = await File.findAll({
     where: { folderId },
     order: [['createDate', 'DESC']],
   });
 
-  return files.map(getFileInfo);
+  return files.map(getFileInfoDTO);
 };
 
 export const getFile = async (fileId: string) => {
-  const file = await File.findByPk(fileId);
+  const file = await File.findByPk(fileId, {
+    include: FaceArea,
+  });
+
+  console.log(file);
 
   if (!file) {
     throw new Error('No File Found...');
   }
 
-  return getFileInfo(file);
+  return getFileInfoExtendedDTO(file);
 };
 
 
 export const processFile = async (fileId: string) => {
-  const file = await File.findByPk(fileId);
+  const file = await File.findByPk(fileId, {
+    include: FaceArea,
+  });
 
   if (!file) {
     throw new Error('No File Found...');
@@ -43,5 +55,5 @@ export const processFile = async (fileId: string) => {
     await file.save();
   }
 
-  return getFileInfo(file);
+  return getFileInfoExtendedDTO(file);
 };

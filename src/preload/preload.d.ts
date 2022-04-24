@@ -12,6 +12,19 @@ export type FileInfo = {
   path: string;
   size: number;
   createDate: Date;
+  isProcessed: boolean;
+}
+
+export type FaceArea = {
+  id: string;
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+}
+
+export type FileInfoExtended = FileInfo & {
+  faceAreas: FaceArea[];
 }
 
 export interface ElectronBridge {
@@ -25,8 +38,8 @@ export interface ElectronBridge {
     processDirectory: (directoryId: string) => Promise<DirectoryInfo>;
     getDirectories: () => Promise<DirectoryInfo[]>;
     getFiles: (directoryId: string) => Promise<FileInfo[]>;
-    getFile: (fileId: string) => Promise<FileInfo>;
-    processFile: (fileId: string) => Promise<FileInfo>;
+    getFile: (fileId: string) => Promise<FileInfoExtended>;
+    processFile: (fileId: string) => Promise<FileInfoExtended>;
   }
 }
 

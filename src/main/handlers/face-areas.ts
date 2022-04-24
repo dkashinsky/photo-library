@@ -1,6 +1,6 @@
 import { FaceArea } from '../db';
 
-const getFaceArea = (faceArea: FaceArea) => ({
+export const getFaceAreaDTO = (faceArea: FaceArea) => ({
   id: faceArea.id,
   x0: faceArea.x0,
   y0: faceArea.y0,
@@ -13,5 +13,5 @@ export const getFileFaces = async (fileId: string) => {
     where: { fileId },
   });
 
-  return faceAreas.map(getFaceArea);
+  return faceAreas.map(getFaceAreaDTO);
 };

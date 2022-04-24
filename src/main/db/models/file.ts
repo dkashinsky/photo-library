@@ -1,5 +1,6 @@
-import { Table, Column, Model, ForeignKey, DataType } from 'sequelize-typescript'
+import { Table, Column, Model, ForeignKey, DataType, HasMany } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types';
+import { FaceArea } from './face-area';
 import { Folder } from './folder';
 
 type FileAttributes = {
@@ -42,4 +43,7 @@ export class File extends Model<FileAttributes, FileCreationAttributes> {
 
   @Column({ allowNull: false, defaultValue: false })
   isProcessed!: boolean;
+
+  @HasMany(() => FaceArea)
+  faceAreas: FaceArea[] = [];
 }
