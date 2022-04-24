@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Card, CardMedia, Typography } from "@mui/material";
-import { useSelector } from 'react-redux';
-import { selectFilesById } from '../../store/files/selectors';
+import { FileInfo } from '../../../preload/preload';
+import { BridgeContext } from '../../bridge/bridge';
 
 export type FileDialogContent = {
   fileId: string;
 }
 
 export const FileDialogContent = ({ fileId }: FileDialogContent) => {
-  const file = useSelector(selectFilesById)[fileId];
+  const bridge = useContext(BridgeContext);
+  const [file, setFile] = useState<FileInfo | null>(null);
+
+  useEffect(() => {
+    bridge?.api.getFile(fileId).then(setFile);
+  }, [bridge, fileId]);
 
   if (!file) {
     return (

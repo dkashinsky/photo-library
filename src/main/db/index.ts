@@ -2,8 +2,7 @@
 import { sequelize } from './sequelize';
 import { Folder } from './models/folder';
 import { File } from './models/file';
-
-//Folder.hasMany(File, { foreignKey: 'folderId' });
+import { FaceArea } from './models/face-area';
 
 export const initDB = async () => {
   return await sequelize.sync();
@@ -12,4 +11,5 @@ export const initDB = async () => {
 export {
   File,
   Folder,
+  FaceArea,
 };

@@ -9,9 +9,10 @@ type FileAttributes = {
   name: string;
   size: number;
   createDate: Date;
+  isProcessed: boolean;
 }
 
-type FileCreationAttributes = Optional<FileAttributes, 'id'>
+type FileCreationAttributes = Optional<FileAttributes, 'id' | 'isProcessed'>
 
 @Table({ timestamps: false })
 export class File extends Model<FileAttributes, FileCreationAttributes> {
@@ -38,4 +39,7 @@ export class File extends Model<FileAttributes, FileCreationAttributes> {
 
   @Column({ allowNull: false })
   createDate!: Date;
+
+  @Column({ allowNull: false, defaultValue: false })
+  isProcessed!: boolean;
 }

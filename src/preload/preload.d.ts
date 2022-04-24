@@ -22,9 +22,11 @@ export interface ElectronBridge {
   }
   api: {
     addDirectory: () => Promise<DirectoryInfo | null>;
-    processDirectory: (directoryId: string) => Promise<DirectoryInfo>,
+    processDirectory: (directoryId: string) => Promise<DirectoryInfo>;
     getDirectories: () => Promise<DirectoryInfo[]>;
     getFiles: (directoryId: string) => Promise<FileInfo[]>;
+    getFile: (fileId: string) => Promise<FileInfo>;
+    processFile: (fileId: string) => Promise<FileInfo>;
   }
 }
 
