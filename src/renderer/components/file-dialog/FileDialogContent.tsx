@@ -1,29 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Box, Card, CardMedia, CircularProgress, Divider } from "@mui/material";
-import { FileInfoExtendedDTO } from '../../../preload/preload';
-import { BridgeContext } from '../../bridge/bridge';
+import React, { useState } from 'react';
+import { Box, Card, CircularProgress, Divider } from "@mui/material";
+import { FaceAreaDTO } from '../../../preload/preload';
 import { FaceAreaList } from './FaceAreaList';
 import { DetectFacesButton } from './DetectFacesButton';
+import { ImagePane } from './ImagePane';
+import { useSelector } from 'react-redux';
+import { selectExtendedFilesById } from '../../store/files/selectors';
 
 export type FileDialogContentProps = {
   fileId: string;
 }
 
 export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
-  const bridge = useContext(BridgeContext);
-  const [file, setFile] = useState<FileInfoExtendedDTO | null>(null);
-
-  useEffect(() => {
-    let destroyed = false;
-
-    bridge?.api.getFile(fileId).then((file) => {
-      if (!destroyed) {
-        setFile(file);
-      }
-    });
-
-    return () => { destroyed = true };
-  }, [bridge, fileId]);
+  const file = useSelector(selectExtendedFilesById)[fileId];
+  const [faceArea, setFaceArea] = useState<FaceAreaDTO | null>(null);
 
   return (
     <Card sx={{ display: 'flex', padding: 1 }}>
@@ -32,12 +22,12 @@ export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
       )}
       {file && (
         <>
-          <CardMedia
-            component="img"
-            image={file.path}
-            alt={file.name}
-            sx={{ width: 'calc(100% - 200px)' }}
-          />
+          <Box>
+            <ImagePane
+              imageSrc={file.path}
+              highlightArea={faceArea}
+            />
+          </Box>
           <Divider
             sx={{ ml: 1, mr: 1 }}
             orientation='vertical'
@@ -46,11 +36,11 @@ export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
           <Box sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: 200,
+            flex: '0 0 200px',
           }}>
             {file.isProcessed
-              ? <FaceAreaList faceAreas={file.faceAreas} />
-              : <DetectFacesButton file={file} setFile={setFile} />}
+              ? <FaceAreaList faceAreas={file.faceAreas} onHover={setFaceArea} />
+              : <DetectFacesButton fileId={fileId} />}
           </Box>
         </>
       )}

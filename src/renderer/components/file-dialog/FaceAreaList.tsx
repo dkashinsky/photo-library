@@ -5,9 +5,10 @@ import { FaceAreaDTO } from '../../../preload/preload';
 
 export type FaceAreaListProps = {
   faceAreas: FaceAreaDTO[];
+  onHover?: (faceArea: FaceAreaDTO | null) => void;
 }
 
-export const FaceAreaList = ({ faceAreas }: FaceAreaListProps) => {
+export const FaceAreaList = ({ faceAreas, onHover }: FaceAreaListProps) => {
   if (!faceAreas.length) {
     return (
       <Typography>No faces detected</Typography>
@@ -20,6 +21,8 @@ export const FaceAreaList = ({ faceAreas }: FaceAreaListProps) => {
         <Button
           key={faceArea.id}
           startIcon={<TagFacesIcon />}
+          onMouseEnter={() => onHover?.(faceArea)}
+          onMouseLeave={() => onHover?.(null)}
         >
           {`Unknown - ${idx + 1}`}
         </Button>

@@ -5,10 +5,10 @@ import { File } from './file';
 type FaceAreaAttributes = {
   id: string;
   fileId: string;
-  x0: number;
-  y0: number;
-  x1: number;
-  y1: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 type FaceAreaCreationAttributes = Optional<FaceAreaAttributes, 'id'>
@@ -28,14 +28,14 @@ export class FaceArea extends Model<FaceAreaAttributes, FaceAreaCreationAttribut
   fileId!: string;
 
   @Column({ allowNull: false })
-  x0!: number;
+  x!: number;
 
   @Column({ allowNull: false })
-  y0!: number;
+  y!: number;
 
   @Column({ allowNull: false })
-  x1!: number;
+  width!: number;
 
   @Column({ allowNull: false })
-  y1!: number;
+  height!: number;
 }

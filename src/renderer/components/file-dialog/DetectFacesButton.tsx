@@ -1,25 +1,18 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React from 'react';
 import { LoadingButton } from '@mui/lab';
 import TagFacesIcon from '@mui/icons-material/TagFaces';
-import { FileInfoExtendedDTO } from '../../../preload/preload';
-import { BridgeContext } from '../../bridge/bridge';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectProcessingById } from '../../store/files/selectors';
+import { processFileInit } from '../../store/files/actions';
 
 export type DetectFacesButtonProps = {
-  file: FileInfoExtendedDTO;
-  setFile: (file: FileInfoExtendedDTO) => void;
+  fileId: string;
 }
 
-export const DetectFacesButton = ({ file, setFile }: DetectFacesButtonProps) => {
-  const bridge = useContext(BridgeContext);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const detectFaces = useCallback(() => {
-    if (!isProcessing && bridge?.api) {
-      setIsProcessing(true);
-      bridge.api.processFile(file.id)
-        .then(fileInfo => setFile({ ...fileInfo }))
-        .finally(() => setIsProcessing(false));
-    }
-  }, [bridge, file.id, isProcessing]);
+export const DetectFacesButton = ({ fileId }: DetectFacesButtonProps) => {
+  const dispatch = useDispatch();
+  const isProcessing = useSelector(selectProcessingById)[fileId];
+  const detectFaces = () => dispatch(processFileInit(fileId));
 
   return (
     <LoadingButton

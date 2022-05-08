@@ -1,4 +1,4 @@
-import { FileInfoDTO } from "../../../preload/preload";
+import { FileInfoDTO, FileInfoExtendedDTO } from "../../../preload/preload";
 import { Action, PayloadAction } from "../utils";
 
 export enum FilesActionType {
@@ -6,6 +6,10 @@ export enum FilesActionType {
   GetFilesInit = '[Files] Get Files - Init',
   GetFilesComplete = '[Files] Get Files - Complete',
   SelectItem = '[Files] Select Item',
+  GetExtendedFileInit = '[Files] Get Extended File - Init',
+  GetExtendedFileComplete = '[Files] Get Extended File - Complete',
+  ProcessFileInit = '[Files] Process File - Init',
+  ProcessFileComplete = '[Files] Process File - Complete',
 }
 
 export const resetFiles: Action<typeof FilesActionType.ResetFiles> = () => ({
@@ -27,8 +31,32 @@ export const selectFileId: PayloadAction<typeof FilesActionType.SelectItem, File
   payload: id,
 });
 
+export const getExtendedFileInit: PayloadAction<typeof FilesActionType.GetExtendedFileInit, string> = (id) => ({
+  type: FilesActionType.GetExtendedFileInit,
+  payload: id,
+});
+
+export const getExtendedFileComplete: PayloadAction<typeof FilesActionType.GetExtendedFileComplete, FileInfoExtendedDTO> = (item) => ({
+  type: FilesActionType.GetExtendedFileComplete,
+  payload: item,
+});
+
+export const processFileInit: PayloadAction<typeof FilesActionType.ProcessFileInit, string> = (id) => ({
+  type: FilesActionType.ProcessFileInit,
+  payload: id,
+});
+
+export const processFileComplete: PayloadAction<typeof FilesActionType.ProcessFileComplete, FileInfoExtendedDTO> = (item) => ({
+  type: FilesActionType.ProcessFileComplete,
+  payload: item,
+});
+
 export type FilesAction =
   | ReturnType<typeof selectFileId>
   | ReturnType<typeof resetFiles>
   | ReturnType<typeof getFilesInit>
-  | ReturnType<typeof getFilesComplete>;
+  | ReturnType<typeof getFilesComplete>
+  | ReturnType<typeof getExtendedFileInit>
+  | ReturnType<typeof getExtendedFileComplete>
+  | ReturnType<typeof processFileInit>
+  | ReturnType<typeof processFileComplete>;

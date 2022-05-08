@@ -17,10 +17,10 @@ export type FileInfoDTO = {
 
 export type FaceAreaDTO = {
   id: string;
-  x0: number;
-  y0: number;
-  x1: number;
-  y1: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 export type FileInfoExtendedDTO = FileInfoDTO & {
