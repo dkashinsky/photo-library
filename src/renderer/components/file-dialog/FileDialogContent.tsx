@@ -1,31 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Card, CircularProgress, Divider } from "@mui/material";
-import { FaceAreaDTO, FileInfoExtendedDTO } from '../../../preload/preload';
-import { BridgeContext } from '../../bridge/bridge';
+import { FaceAreaDTO } from '../../../preload/preload';
 import { FaceAreaList } from './FaceAreaList';
 import { DetectFacesButton } from './DetectFacesButton';
 import { ImagePane } from './ImagePane';
+import { useSelector } from 'react-redux';
+import { selectExtendedFilesById } from '../../store/files/selectors';
 
 export type FileDialogContentProps = {
   fileId: string;
 }
 
 export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
-  const bridge = useContext(BridgeContext);
-  const [file, setFile] = useState<FileInfoExtendedDTO | null>(null);
+  const file = useSelector(selectExtendedFilesById)[fileId];
   const [faceArea, setFaceArea] = useState<FaceAreaDTO | null>(null);
-
-  useEffect(() => {
-    let destroyed = false;
-
-    bridge?.api.getFile(fileId).then((file) => {
-      if (!destroyed) {
-        setFile(file);
-      }
-    });
-
-    return () => { destroyed = true };
-  }, [bridge, fileId]);
 
   return (
     <Card sx={{ display: 'flex', padding: 1 }}>
@@ -52,7 +40,7 @@ export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
           }}>
             {file.isProcessed
               ? <FaceAreaList faceAreas={file.faceAreas} onHover={setFaceArea} />
-              : <DetectFacesButton file={file} setFile={setFile} />}
+              : <DetectFacesButton fileId={fileId} />}
           </Box>
         </>
       )}
