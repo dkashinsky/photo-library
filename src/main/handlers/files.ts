@@ -55,10 +55,10 @@ export const processFile = async (fileId: string) => {
       const { x, y, width, height } = detection.relativeBox;
       const faceArea = await FaceArea.create({
         fileId,
-        x0: x,
-        y0: y,
-        x1: x + width,
-        y1: y + height,
+        x,
+        y,
+        width,
+        height,
       });
 
       file.faceAreas.push(faceArea);

@@ -2,10 +2,10 @@ import { FaceArea } from '../db';
 
 export const getFaceAreaDTO = (faceArea: FaceArea) => ({
   id: faceArea.id,
-  x0: faceArea.x0,
-  y0: faceArea.y0,
-  x1: faceArea.x1,
-  y1: faceArea.y1,
+  x: faceArea.x,
+  y: faceArea.y,
+  width: faceArea.width,
+  height: faceArea.height,
 });
 
 export const getFileFaces = async (fileId: string) => {
