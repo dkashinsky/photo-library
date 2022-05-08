@@ -2,11 +2,13 @@ import { app, BrowserWindow } from 'electron';
 import { createMainWindow } from './main-window';
 import { registerEventHandlers } from './event-handlers';
 import { initDB } from './db';
+import { initFaceAPI } from './face-api';
 
 let mainWindow = null;
 
 app.whenReady()
   .then(initDB)
+  .then(initFaceAPI)
   .then(() => {
     mainWindow = createMainWindow();
     mainWindow.loadURL('http://localhost:3000');
