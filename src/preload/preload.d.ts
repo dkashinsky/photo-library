@@ -27,6 +27,11 @@ export type FileInfoExtendedDTO = FileInfoDTO & {
   faceAreas: FaceAreaDTO[];
 }
 
+export type PersonDTO = {
+  id: string;
+  name: string;
+}
+
 export interface ElectronBridge {
   versions: {
     chrome: string;
@@ -40,6 +45,7 @@ export interface ElectronBridge {
     getFiles: (directoryId: string) => Promise<FileInfoDTO[]>;
     getFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
     processFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
+    getPeople: () => Promise<PersonDTO[]>;
   }
 }
 
