@@ -45,5 +45,5 @@ export class File extends Model<FileAttributes, FileCreationAttributes> {
   isProcessed!: boolean;
 
   @HasMany(() => FaceArea)
-  faceAreas: FaceArea[] = [];
+  faceAreas!: FaceArea[];
 }

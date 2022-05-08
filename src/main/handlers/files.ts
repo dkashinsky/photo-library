@@ -1,5 +1,6 @@
 import { FaceArea, File } from '../db';
 import { getFaceAreaDTO } from './face-areas';
+import { detectFaces } from '../face-api/detection';
 
 const getFileInfoDTO = (file: File) => ({
   id: file.id,
@@ -48,7 +49,21 @@ export const processFile = async (fileId: string) => {
   }
 
   if (!file.isProcessed) {
-    console.log('processing...');
+    const faceDetections = await detectFaces(file.path);
+
+    for (const detection of faceDetections) {
+      const { x, y, width, height } = detection.relativeBox;
+      const faceArea = await FaceArea.create({
+        fileId,
+        x0: x,
+        y0: y,
+        x1: x + width,
+        y1: y + height,
+      });
+
+      file.faceAreas.push(faceArea);
+    }
+
     file.isProcessed = true;
     await file.save();
   }

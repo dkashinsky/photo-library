@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Card, CardMedia, Divider, Typography } from "@mui/material";
+import { Box, Card, CardMedia, CircularProgress, Divider } from "@mui/material";
 import { FileInfoExtendedDTO } from '../../../preload/preload';
 import { BridgeContext } from '../../bridge/bridge';
 import { FaceAreaList } from './FaceAreaList';
@@ -25,34 +25,35 @@ export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
     return () => { destroyed = true };
   }, [bridge, fileId]);
 
-  if (!file) {
-    return (
-      <Typography>No file found.</Typography>
-    );
-  }
-
   return (
     <Card sx={{ display: 'flex', padding: 1 }}>
-      <CardMedia
-        component="img"
-        image={file.path}
-        alt={file.name}
-        sx={{ width: 'calc(100% - 200px)' }}
-      />
-      <Divider
-        sx={{ ml: 1, mr: 1 }}
-        orientation='vertical'
-        flexItem
-      />
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: 200,
-      }}>
-        {file.isProcessed
-          ? <FaceAreaList faceAreas={file.faceAreas} />
-          : <DetectFacesButton file={file} setFile={setFile} />}
-      </Box>
+      {!file && (
+        <CircularProgress />
+      )}
+      {file && (
+        <>
+          <CardMedia
+            component="img"
+            image={file.path}
+            alt={file.name}
+            sx={{ width: 'calc(100% - 200px)' }}
+          />
+          <Divider
+            sx={{ ml: 1, mr: 1 }}
+            orientation='vertical'
+            flexItem
+          />
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: 200,
+          }}>
+            {file.isProcessed
+              ? <FaceAreaList faceAreas={file.faceAreas} />
+              : <DetectFacesButton file={file} setFile={setFile} />}
+          </Box>
+        </>
+      )}
     </Card >
   );
 };

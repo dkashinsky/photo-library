@@ -37,10 +37,12 @@
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
+    "@fsdk/face-api-node": "^0.22.3",
     "@fsdk/tree-utils": "^0.0.1",
     "@mui/icons-material": "^5.5.1",
     "@mui/lab": "^5.0.0-alpha.79",
     "@mui/material": "^5.5.3",
+    "@tensorflow/tfjs-node": "^3.16.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.8",
