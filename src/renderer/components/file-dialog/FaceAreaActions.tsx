@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Button, ButtonProps, styled } from "@mui/material";
+import { Box, Button, ButtonProps, styled, Typography } from "@mui/material";
 import { FaceAreaDTO, PersonDTO } from '../../../preload/preload';
 import { PersonDialog } from '../person-dialog/PersonDialog';
 import { useDispatch } from 'react-redux';
@@ -35,7 +35,8 @@ export const FaceAreaActions = ({ faceArea }: FaceAreaActionsProps) => {
   }, [dispatch, faceArea]);
 
   return (
-    <>
+    <Box display="flex" flexDirection="column">
+      <Typography variant='subtitle2'>Actions:</Typography>
       {!faceArea.personId && (
         <StyledButton onClick={toggleOpen}>
           Identify
@@ -58,6 +59,6 @@ export const FaceAreaActions = ({ faceArea }: FaceAreaActionsProps) => {
         onClose={toggleOpen}
         onConfirm={handleConfirm}
       />
-    </>
+    </Box>
   );
 };

@@ -14,7 +14,7 @@ export type ImagePaneProps = {
 
 export const ImagePane = ({ imageSrc, highlightArea }: ImagePaneProps) => {
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box sx={{ position: 'relative', lineHeight: 0 }}>
       <Image src={imageSrc} />
       {highlightArea && (<ImageAreaHighlighter {...highlightArea} />)}
     </Box>

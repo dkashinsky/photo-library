@@ -47,6 +47,7 @@ export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
               ? (
                 <FaceAreaList
                   faceAreas={file.faceAreas}
+                  selectedAreaId={selectedAreaId}
                   onHover={setHoveredArea}
                   onClick={({ id }) => setSelectedAreaId(id)}
                 />
