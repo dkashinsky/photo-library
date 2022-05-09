@@ -6,6 +6,7 @@ import { DetectFacesButton } from './DetectFacesButton';
 import { ImagePane } from './ImagePane';
 import { useSelector } from 'react-redux';
 import { selectExtendedFilesById } from '../../store/files/selectors';
+import { FaceAreaActions } from './FaceAreaActions';
 
 export type FileDialogContentProps = {
   fileId: string;
@@ -14,6 +15,7 @@ export type FileDialogContentProps = {
 export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
   const file = useSelector(selectExtendedFilesById)[fileId];
   const [faceArea, setFaceArea] = useState<FaceAreaDTO | null>(null);
+  const [selected, setSelected] = useState<FaceAreaDTO | null>(null);
 
   return (
     <Card sx={{ display: 'flex', padding: 1 }}>
@@ -25,7 +27,7 @@ export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
           <Box>
             <ImagePane
               imageSrc={file.path}
-              highlightArea={faceArea}
+              highlightArea={faceArea || selected}
             />
           </Box>
           <Divider
@@ -39,8 +41,17 @@ export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
             flex: '0 0 200px',
           }}>
             {file.isProcessed
-              ? <FaceAreaList faceAreas={file.faceAreas} onHover={setFaceArea} />
+              ? (
+                <FaceAreaList
+                  faceAreas={file.faceAreas}
+                  onHover={setFaceArea}
+                  onClick={setSelected}
+                />
+              )
               : <DetectFacesButton fileId={fileId} />}
+            {selected && (
+              <FaceAreaActions faceArea={selected} />
+            )}
           </Box>
         </>
       )}

@@ -17,8 +17,9 @@ export const getPeopleComplete: PayloadAction<typeof PeopleActionType.GetPeopleC
   payload: item,
 });
 
-export const addPersonInit: Action<typeof PeopleActionType.AddPersonInit> = () => ({
+export const addPersonInit: PayloadAction<typeof PeopleActionType.AddPersonInit, string> = (name) => ({
   type: PeopleActionType.AddPersonInit,
+  payload: name,
 });
 
 export const addPersonComplete: PayloadAction<typeof PeopleActionType.AddPersonComplete, PersonDTO> = (item) => ({

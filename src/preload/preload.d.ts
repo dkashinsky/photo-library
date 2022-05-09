@@ -46,6 +46,7 @@ export interface ElectronBridge {
     getFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
     processFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
     getPeople: () => Promise<PersonDTO[]>;
+    addPerson: (name: string) => Promise<PersonDTO>;
   }
 }
 

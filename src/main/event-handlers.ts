@@ -1,7 +1,7 @@
 import { ipcMain, dialog, BrowserWindow } from 'electron';
 import { addDirectory, getDirectories, processDirectory } from './handlers/folders';
 import { getFile, getFiles, processFile } from './handlers/files';
-import { getPeople } from './handlers/people';
+import { addPerson, getPeople } from './handlers/people';
 
 export const registerEventHandlers = (mainWindow: BrowserWindow) => {
   ipcMain.handle('api:addDirectory', async () => {
@@ -38,5 +38,9 @@ export const registerEventHandlers = (mainWindow: BrowserWindow) => {
 
   ipcMain.handle('api:getPeople', async () => {
     return await getPeople();
+  });
+
+  ipcMain.handle('api:addPerson', async (_, name) => {
+    return await addPerson(name);
   });
 };

@@ -10,3 +10,9 @@ export const getPeople = async () => {
 
   return people.map(getPersonDTO);
 };
+
+export const addPerson = async (name: string) => {
+  const person = await Person.create({ name });
+
+  return getPersonDTO(person);
+};
