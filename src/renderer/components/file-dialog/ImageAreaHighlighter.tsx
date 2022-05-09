@@ -4,7 +4,6 @@ import { Box, styled } from "@mui/material";
 const toPercentScale = (value: number) => `${(value * 100).toFixed(2)}%`;
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  position: 'absolute',
   border: `2px solid ${theme.palette.primary.light}`,
 }));
 
