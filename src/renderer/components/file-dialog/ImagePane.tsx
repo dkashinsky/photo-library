@@ -3,7 +3,8 @@ import { Box, styled } from "@mui/material";
 import { ImageAreaHighlighter, ImageAreaHighlighterProps } from './ImageAreaHighlighter';
 
 const Image = styled('img')({
-  width: '100%',
+  maxWidth: '100%',
+  maxHeight: '100%',
 });
 
 export type ImagePaneProps = {
@@ -13,7 +14,7 @@ export type ImagePaneProps = {
 
 export const ImagePane = ({ imageSrc, highlightArea }: ImagePaneProps) => {
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box sx={{ position: 'relative', lineHeight: 0 }}>
       <Image src={imageSrc} />
       {highlightArea && (<ImageAreaHighlighter {...highlightArea} />)}
     </Box>

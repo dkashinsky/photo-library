@@ -1,6 +1,7 @@
 import { ipcMain, dialog, BrowserWindow } from 'electron';
 import { addDirectory, getDirectories, processDirectory } from './handlers/folders';
-import { getFile, getFiles, processFile } from './handlers/files';
+import { getFile, getFiles, linkFaceAreaToPerson, processFile, unlinkFaceAreaFromPerson } from './handlers/files';
+import { addPerson, getPeople } from './handlers/people';
 
 export const registerEventHandlers = (mainWindow: BrowserWindow) => {
   ipcMain.handle('api:addDirectory', async () => {
@@ -19,19 +20,35 @@ export const registerEventHandlers = (mainWindow: BrowserWindow) => {
     return await getDirectories();
   });
 
-  ipcMain.handle('api:processDirectory', async (_, directoryId) => {
+  ipcMain.handle('api:processDirectory', async (_, directoryId: string) => {
     return await processDirectory(directoryId);
   });
 
-  ipcMain.handle('api:getFiles', async (_, directoryId) => {
+  ipcMain.handle('api:getFiles', async (_, directoryId: string) => {
     return await getFiles(directoryId);
   });
 
-  ipcMain.handle('api:getFile', async (_, fileId) => {
+  ipcMain.handle('api:getFile', async (_, fileId: string) => {
     return await getFile(fileId);
   });
 
-  ipcMain.handle('api:processFile', async (_, fileId) => {
+  ipcMain.handle('api:processFile', async (_, fileId: string) => {
     return await processFile(fileId);
+  });
+
+  ipcMain.handle('api:getPeople', async () => {
+    return await getPeople();
+  });
+
+  ipcMain.handle('api:addPerson', async (_, name: string) => {
+    return await addPerson(name);
+  });
+
+  ipcMain.handle('api:linkPerson', async (_, faceAreaId: string, personId: string) => {
+    return await linkFaceAreaToPerson(faceAreaId, personId);
+  });
+
+  ipcMain.handle('api:unlinkPerson', async (_, faceAreaId: string) => {
+    return await unlinkFaceAreaFromPerson(faceAreaId);
   });
 };
