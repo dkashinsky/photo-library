@@ -35,6 +35,10 @@ export const PersonDialog = ({ open, onClose }: PersonDialogProps) => {
   const dispatch = useDispatch();
   const people = useSelector(selectPeople);
   const [selected, setSelected] = useState<PersonDTO | null>(null);
+  const onCloseInner = useCallback(() => {
+    setSelected(null);
+    onClose();
+  }, [onClose]);
 
   const [confirmation, setConfirmation] = useState({ open: false, input: '' });
   const closeConfirmation = () => setConfirmation(state => ({ ...state, open: false }));
@@ -57,7 +61,7 @@ export const PersonDialog = ({ open, onClose }: PersonDialogProps) => {
     <>
       <Dialog
         open={open}
-        onClose={onClose}
+        onClose={onCloseInner}
       >
         <DialogContent>
           <Autocomplete
@@ -109,7 +113,7 @@ export const PersonDialog = ({ open, onClose }: PersonDialogProps) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onCloseInner}>Cancel</Button>
           <Button>Ok</Button>
         </DialogActions>
       </Dialog>
