@@ -20,7 +20,7 @@ const api = {
   getPeople: () => ipcRenderer.invoke('api:getPeople'),
   addPerson: (name: string) => ipcRenderer.invoke('api:addPerson', name),
   linkPerson: (faceAreaId: string, personId: string) => ipcRenderer.invoke('api:linkPerson', faceAreaId, personId),
-  unlinkPerson: (faceAreaId: string, personId: string) => ipcRenderer.invoke('api:unlinkPerson', faceAreaId),
+  unlinkPerson: (faceAreaId: string) => ipcRenderer.invoke('api:unlinkPerson', faceAreaId),
 };
 
 const bridge = {

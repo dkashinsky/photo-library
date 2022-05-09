@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Box, Card, CircularProgress, Divider } from "@mui/material";
 import { FaceAreaDTO } from '../../../preload/preload';
 import { FaceAreaList } from './FaceAreaList';
@@ -14,8 +14,11 @@ export type FileDialogContentProps = {
 
 export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
   const file = useSelector(selectExtendedFilesById)[fileId];
-  const [faceArea, setFaceArea] = useState<FaceAreaDTO | null>(null);
-  const [selected, setSelected] = useState<FaceAreaDTO | null>(null);
+  const [hoveredArea, setHoveredArea] = useState<FaceAreaDTO | null>(null);
+  const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
+  const selectedArea = useMemo(() => {
+    return file?.faceAreas.find(({ id }) => id === selectedAreaId) || null;
+  }, [file, selectedAreaId]);
 
   return (
     <Card sx={{ display: 'flex', padding: 1 }}>
@@ -27,7 +30,7 @@ export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
           <Box>
             <ImagePane
               imageSrc={file.path}
-              highlightArea={faceArea || selected}
+              highlightArea={hoveredArea || selectedArea}
             />
           </Box>
           <Divider
@@ -44,13 +47,13 @@ export const FileDialogContent = ({ fileId }: FileDialogContentProps) => {
               ? (
                 <FaceAreaList
                   faceAreas={file.faceAreas}
-                  onHover={setFaceArea}
-                  onClick={setSelected}
+                  onHover={setHoveredArea}
+                  onClick={({ id }) => setSelectedAreaId(id)}
                 />
               )
               : <DetectFacesButton fileId={fileId} />}
-            {selected && (
-              <FaceAreaActions faceArea={selected} />
+            {selectedArea && (
+              <FaceAreaActions faceArea={selectedArea} />
             )}
           </Box>
         </>

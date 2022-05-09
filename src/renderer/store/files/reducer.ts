@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { FileInfoDTO, FileInfoExtendedDTO } from "../../../preload/preload";
+import { PeopleAction, PeopleActionType } from "../people/actions";
 import { ItemsById } from "../utils";
 import { FilesAction, FilesActionType } from "./actions";
 
@@ -85,12 +86,16 @@ function processingByIdReducer(
 
 function extendedFilesByIdReducer(
   state: ItemsById<FileInfoExtendedDTO> = INITIAL_STATE.extendedFilesById,
-  action: FilesAction,
+  action: FilesAction | PeopleAction,
 ): ItemsById<FileInfoExtendedDTO> {
   switch (action.type) {
     case FilesActionType.GetExtendedFileComplete:
       return { ...state, [action.payload.id]: action.payload };
     case FilesActionType.ProcessFileComplete:
+      return { ...state, [action.payload.id]: action.payload };
+    case PeopleActionType.LinkPersonComplete:
+      return { ...state, [action.payload.id]: action.payload };
+    case PeopleActionType.UnlinkPersonComplete:
       return { ...state, [action.payload.id]: action.payload };
     default:
       return state;

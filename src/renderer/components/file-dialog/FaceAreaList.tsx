@@ -2,7 +2,8 @@ import React from 'react';
 import { Button, ButtonGroup, Typography } from "@mui/material";
 import TagFacesIcon from '@mui/icons-material/TagFaces';
 import { FaceAreaDTO } from '../../../preload/preload';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { selectPeopleById } from '../../store/people/selectors';
 
 export type FaceAreaListProps = {
   faceAreas: FaceAreaDTO[];
@@ -11,6 +12,8 @@ export type FaceAreaListProps = {
 }
 
 export const FaceAreaList = ({ faceAreas, onHover, onClick }: FaceAreaListProps) => {
+  const peopleById = useSelector(selectPeopleById);
+
   if (!faceAreas.length) {
     return (
       <Typography>No faces detected</Typography>
@@ -19,17 +22,24 @@ export const FaceAreaList = ({ faceAreas, onHover, onClick }: FaceAreaListProps)
 
   return (
     <ButtonGroup orientation="vertical">
-      {faceAreas.map((faceArea, idx) => (
-        <Button
-          key={faceArea.id}
-          startIcon={<TagFacesIcon />}
-          onMouseEnter={() => onHover?.(faceArea)}
-          onMouseLeave={() => onHover?.(null)}
-          onClick={() => onClick?.(faceArea)}
-        >
-          {`Unknown - ${idx + 1}`}
-        </Button>
-      ))}
+      {faceAreas.map((faceArea, idx) => {
+        const { id, personId } = faceArea;
+        const displayName = personId && peopleById[personId]
+          ? peopleById[personId]?.name
+          : `Unknown - ${idx + 1}`;
+
+        return (
+          <Button
+            key={id}
+            startIcon={<TagFacesIcon />}
+            onMouseEnter={() => onHover?.(faceArea)}
+            onMouseLeave={() => onHover?.(null)}
+            onClick={() => onClick?.(faceArea)}
+          >
+            {displayName}
+          </Button>
+        );
+      })}
     </ButtonGroup>
   );
 };

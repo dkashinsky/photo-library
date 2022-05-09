@@ -1,4 +1,4 @@
-import { Table, Column, Model, ForeignKey, DataType, BelongsTo } from 'sequelize-typescript'
+import { Table, Column, Model, ForeignKey, DataType, BelongsTo, AllowNull } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types';
 import { File } from './file';
 import { Person } from './person';
@@ -42,6 +42,7 @@ export class FaceArea extends Model<FaceAreaAttributes, FaceAreaCreationAttribut
   height!: number;
 
   @ForeignKey(() => Person)
+  @AllowNull
   @Column
   personId?: string;
 

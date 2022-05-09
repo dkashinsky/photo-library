@@ -29,16 +29,25 @@ const isTemplate = (option: PersonOption): option is PersonOptionTemplate => {
 export type PersonDialogProps = {
   open: boolean;
   onClose: () => void;
+  onConfirm: (person: PersonDTO) => void;
 }
 
-export const PersonDialog = ({ open, onClose }: PersonDialogProps) => {
+export const PersonDialog = ({ open, onClose, onConfirm }: PersonDialogProps) => {
   const dispatch = useDispatch();
   const people = useSelector(selectPeople);
   const [selected, setSelected] = useState<PersonDTO | null>(null);
+
   const onCloseInner = useCallback(() => {
     setSelected(null);
     onClose();
   }, [onClose]);
+
+  const onConfirmInner = useCallback(() => {
+    if (selected) {
+      setSelected(null);
+      onConfirm(selected);
+    }
+  }, [onClose, selected]);
 
   const [confirmation, setConfirmation] = useState({ open: false, input: '' });
   const closeConfirmation = () => setConfirmation(state => ({ ...state, open: false }));
@@ -114,7 +123,7 @@ export const PersonDialog = ({ open, onClose }: PersonDialogProps) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onCloseInner}>Cancel</Button>
-          <Button>Ok</Button>
+          <Button onClick={onConfirmInner} disabled={!selected}>Ok</Button>
         </DialogActions>
       </Dialog>
 
