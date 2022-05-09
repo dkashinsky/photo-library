@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript'
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types';
+import { FaceArea } from './face-area';
 
 type PersonAttributes = {
   id: string;
@@ -20,4 +21,7 @@ export class Person extends Model<PersonAttributes, PersonCreationAttributes> {
 
   @Column({ allowNull: false })
   name!: string;
+
+  @HasMany(() => FaceArea)
+  faceAreas?: FaceArea[];
 }

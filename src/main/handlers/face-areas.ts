@@ -6,6 +6,7 @@ export const getFaceAreaDTO = (faceArea: FaceArea) => ({
   y: faceArea.y,
   width: faceArea.width,
   height: faceArea.height,
+  personId: faceArea.personId,
 });
 
 export const getFileFaces = async (fileId: string) => {

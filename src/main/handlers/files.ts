@@ -70,3 +70,24 @@ export const processFile = async (fileId: string) => {
 
   return getFileInfoExtendedDTO(file);
 };
+
+const setFaceAreaPerson = async (faceAreaId: string, personId: string | undefined) => {
+  const faceArea = await FaceArea.findByPk(faceAreaId);
+
+  if (!faceArea) {
+    throw new Error('No Face Area Found...');
+  }
+
+  faceArea.personId = personId;
+  await faceArea.save();
+
+  return await getFile(faceArea.fileId);
+}
+
+export const linkFaceAreaToPerson = async (faceAreaId: string, personId: string) => {
+  return await setFaceAreaPerson(faceAreaId, personId);
+}
+
+export const unlinkFaceAreaFromPerson = async (faceAreaId: string) => {
+  return await setFaceAreaPerson(faceAreaId, undefined);
+}

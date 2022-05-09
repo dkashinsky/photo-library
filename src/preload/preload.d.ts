@@ -21,6 +21,7 @@ export type FaceAreaDTO = {
   y: number;
   width: number;
   height: number;
+  personId?: string;
 }
 
 export type FileInfoExtendedDTO = FileInfoDTO & {
@@ -47,6 +48,8 @@ export interface ElectronBridge {
     processFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
     getPeople: () => Promise<PersonDTO[]>;
     addPerson: (name: string) => Promise<PersonDTO>;
+    linkPerson: (faceAreaId: string, personId: string) => Promise<FileInfoExtendedDTO>;
+    unlinkPerson: (faceAreaId: string) => Promise<FileInfoExtendedDTO>;
   }
 }
 

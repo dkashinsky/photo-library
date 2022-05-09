@@ -1,6 +1,7 @@
-import { Table, Column, Model, ForeignKey, DataType } from 'sequelize-typescript'
+import { Table, Column, Model, ForeignKey, DataType, BelongsTo } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types';
 import { File } from './file';
+import { Person } from './person';
 
 type FaceAreaAttributes = {
   id: string;
@@ -9,6 +10,7 @@ type FaceAreaAttributes = {
   y: number;
   width: number;
   height: number;
+  personId?: string;
 }
 
 type FaceAreaCreationAttributes = Optional<FaceAreaAttributes, 'id'>
@@ -38,4 +40,11 @@ export class FaceArea extends Model<FaceAreaAttributes, FaceAreaCreationAttribut
 
   @Column({ allowNull: false })
   height!: number;
+
+  @ForeignKey(() => Person)
+  @Column
+  personId?: string;
+
+  @BelongsTo(() => Person)
+  person?: Person;
 }
