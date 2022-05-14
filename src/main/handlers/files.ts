@@ -1,4 +1,4 @@
-import { FaceArea, File } from '../db';
+import { FaceArea, File, PersonDescriptorRef } from '../db';
 import { getFaceAreaDTO } from './face-areas';
 import { detectFaces } from '../face-api/detection';
 
@@ -51,7 +51,7 @@ export const processFile = async (fileId: string) => {
   if (!file.isProcessed) {
     const faceDetections = await detectFaces(file.path);
 
-    for (const detection of faceDetections) {
+    for (const { detection, descriptor } of faceDetections) {
       const { x, y, width, height } = detection.relativeBox;
       const faceArea = await FaceArea.create({
         fileId,
@@ -59,6 +59,7 @@ export const processFile = async (fileId: string) => {
         y,
         width,
         height,
+        descriptor: Array.from(descriptor)
       });
 
       file.faceAreas.push(faceArea);
@@ -84,7 +85,26 @@ const setFaceAreaPerson = async (faceAreaId: string, personId: string | null) =>
   return await getFile(faceArea.fileId);
 };
 
-export const linkFaceAreaToPerson = async (faceAreaId: string, personId: string) => {
+const setPersonReference = async (personId: string, faceAreaId: string) => {
+  // TODO: upsert fails when personId and faceAreaId already exist alhough it should update
+  // need to figure out why.
+  // const ref = await PersonDescriptorRef.upsert({
+  //   personId,
+  //   faceAreaId,
+  // });
+
+  const refBody = { personId, faceAreaId };
+  let ref = await PersonDescriptorRef.findOne({ where: refBody });
+  if (!ref) {
+    ref = await PersonDescriptorRef.create(refBody);
+  }
+};
+
+export const linkFaceAreaToPerson = async (faceAreaId: string, personId: string, asReference?: boolean) => {
+  if (asReference) {
+    await setPersonReference(personId, faceAreaId);
+  }
+
   return await setFaceAreaPerson(faceAreaId, personId);
 };
 

@@ -33,6 +33,12 @@ export type PersonDTO = {
   name: string;
 }
 
+export type LinkPersonRequest = {
+  faceAreaId: string;
+  personId: string;
+  asReference?: boolean;
+}
+
 export interface ElectronBridge {
   versions: {
     chrome: string;
@@ -48,7 +54,7 @@ export interface ElectronBridge {
     processFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
     getPeople: () => Promise<PersonDTO[]>;
     addPerson: (name: string) => Promise<PersonDTO>;
-    linkPerson: (faceAreaId: string, personId: string) => Promise<FileInfoExtendedDTO>;
+    linkPerson: (linkRequest: LinkPersonRequest) => Promise<FileInfoExtendedDTO>;
     unlinkPerson: (faceAreaId: string) => Promise<FileInfoExtendedDTO>;
   }
 }
