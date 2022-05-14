@@ -56,6 +56,7 @@ export interface ElectronBridge {
     addPerson: (name: string) => Promise<PersonDTO>;
     linkPerson: (linkRequest: LinkPersonRequest) => Promise<FileInfoExtendedDTO>;
     unlinkPerson: (faceAreaId: string) => Promise<FileInfoExtendedDTO>;
+    recognizePerson: (faceAreaId: string) => Promise<PersonDTO | null>;
   }
 }
 

@@ -3,12 +3,13 @@ import { Box, Button, ButtonProps, styled, Typography } from "@mui/material";
 import { FaceAreaDTO } from '../../../preload/preload';
 import { PersonDialog, PersonDialogConfirmation } from '../person-dialog/PersonDialog';
 import { useDispatch } from 'react-redux';
-import { linkPersonInit, unlinkPersonInit } from '../../store/people/actions';
+import { linkPersonInit, recognizePersonInit, unlinkPersonInit } from '../../store/people/actions';
 
 const StyledButton = styled((props: ButtonProps) => (
   <Button
     variant='contained'
     size='small'
+    sx={{ marginBottom: 0.5 }}
     {...props}
   />
 ))({});
@@ -31,6 +32,10 @@ export const FaceAreaActions = ({ faceArea }: FaceAreaActionsProps) => {
     }));
   }, [dispatch, faceArea]);
 
+  const handleRecognize = useCallback(() => {
+    dispatch(recognizePersonInit(faceArea.id));
+  }, [dispatch, faceArea]);
+
   const handleUnlink = useCallback(() => {
     dispatch(unlinkPersonInit(faceArea.id));
   }, [dispatch, faceArea]);
@@ -41,6 +46,15 @@ export const FaceAreaActions = ({ faceArea }: FaceAreaActionsProps) => {
       {!faceArea.personId && (
         <StyledButton onClick={toggleOpen}>
           Identify
+        </StyledButton>
+      )}
+
+      {!faceArea.personId && (
+        <StyledButton
+          color='success'
+          onClick={handleRecognize}
+        >
+          Recognize
         </StyledButton>
       )}
 

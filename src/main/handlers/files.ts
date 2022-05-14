@@ -1,6 +1,8 @@
-import { FaceArea, File, PersonDescriptorRef } from '../db';
+import { FaceArea, File, Person, PersonDescriptorRef } from '../db';
 import { getFaceAreaDTO } from './face-areas';
-import { detectFaces } from '../face-api/detection';
+import { detectFaces, matchFaces } from '../face-api/detection';
+import { groupBy } from './utils/group-by';
+import { getPerson } from './people';
 
 const getFileInfoDTO = (file: File) => ({
   id: file.id,
@@ -59,7 +61,7 @@ export const processFile = async (fileId: string) => {
         y,
         width,
         height,
-        descriptor: Array.from(descriptor)
+        descriptor,
       });
 
       file.faceAreas.push(faceArea);
@@ -110,4 +112,20 @@ export const linkFaceAreaToPerson = async (faceAreaId: string, personId: string,
 
 export const unlinkFaceAreaFromPerson = async (faceAreaId: string) => {
   return await setFaceAreaPerson(faceAreaId, null);
+};
+
+export const recognizeFaceArea = async (faceAreaId: string) => {
+  const faceArea = await FaceArea.findByPk(faceAreaId, { rejectOnEmpty: true });
+  const descriptors = await PersonDescriptorRef.findAll({
+    include: [FaceArea],
+  });
+  const descriptorsByPersonId = groupBy(descriptors, 'personId', (item) => {
+    return item.faceArea.descriptor;
+  });
+
+  const match = matchFaces(faceArea.descriptor, descriptorsByPersonId);
+
+  return match
+    ? await getPerson(match.personId)
+    : null;
 };

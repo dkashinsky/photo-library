@@ -1,6 +1,6 @@
 import { ipcMain, dialog, BrowserWindow } from 'electron';
 import { addDirectory, getDirectories, processDirectory } from './handlers/folders';
-import { getFile, getFiles, linkFaceAreaToPerson, processFile, unlinkFaceAreaFromPerson } from './handlers/files';
+import { getFile, getFiles, linkFaceAreaToPerson, processFile, recognizeFaceArea, unlinkFaceAreaFromPerson } from './handlers/files';
 import { addPerson, getPeople } from './handlers/people';
 
 export type LinkPersonRequest = {
@@ -58,5 +58,9 @@ export const registerEventHandlers = (mainWindow: BrowserWindow) => {
 
   ipcMain.handle('api:unlinkPerson', async (_, faceAreaId: string) => {
     return await unlinkFaceAreaFromPerson(faceAreaId);
+  });
+
+  ipcMain.handle('api:recognizePerson', async (_, faceAreaId: string) => {
+    return await recognizeFaceArea(faceAreaId);
   });
 };

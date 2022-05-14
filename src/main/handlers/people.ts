@@ -11,6 +11,13 @@ export const getPeople = async () => {
   return people.map(getPersonDTO);
 };
 
+export const getPerson = async (personId: string) => {
+  const person = await Person.findByPk(personId, { rejectOnEmpty: true });
+
+  return getPersonDTO(person);
+};
+
+
 export const addPerson = async (name: string) => {
   const person = await Person.create({ name });
 

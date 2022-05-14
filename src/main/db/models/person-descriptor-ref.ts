@@ -1,4 +1,4 @@
-import { Table, Column, Model, ForeignKey, Index, Unique, createIndexDecorator } from 'sequelize-typescript'
+import { Table, Column, Model, ForeignKey, createIndexDecorator, BelongsTo } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types';
 import { FaceArea } from './face-area';
 import { Person } from './person';
@@ -27,4 +27,7 @@ export class PersonDescriptorRef extends Model<PersonDescriptorRefAttributes, Pe
   @CompoundUniqueIndex
   @Column({ allowNull: false })
   faceAreaId!: string;
+
+  @BelongsTo(() => FaceArea)
+  faceArea!: FaceArea;
 }
