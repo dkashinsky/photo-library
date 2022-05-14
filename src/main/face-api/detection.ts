@@ -17,5 +17,25 @@ export const detectFaces = async (filePath: string) => {
 
   image.dispose();
 
-  return detections;
+  return detections.map(detection => ({
+    ...detection,
+    descriptor: Array.from(detection.descriptor),
+  }));
+};
+
+export const matchFaces = (
+  faceDescriptor: number[],
+  referenceData: Record<string, number[][]>,
+) => {
+  const labeledDescriptors = Object.keys(referenceData).map(personId => {
+    const descriptors = referenceData[personId].map(descriptor => new Float32Array(descriptor));
+    return new faceapi.LabeledFaceDescriptors(personId, descriptors);
+  });
+  const matcher = new faceapi.FaceMatcher(labeledDescriptors);
+  const match = matcher.matchDescriptor(new Float32Array(faceDescriptor));
+
+
+  return match.distance < matcher.distanceThreshold
+    ? { personId: match.label, distance: match.distance }
+    : null;
 };

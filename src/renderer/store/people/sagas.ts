@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import { FileInfoExtendedDTO, PersonDTO } from "../../../preload/preload";
 import api from "../../bridge/api";
-import { addPersonComplete, addPersonInit, getPeopleComplete, linkPersonComplete, linkPersonInit, PeopleActionType, unlinkPersonComplete, unlinkPersonInit } from "./actions";
+import { addPersonComplete, addPersonInit, getPeopleComplete, linkPersonComplete, linkPersonInit, PeopleActionType, recognizePersonComplete, recognizePersonInit, unlinkPersonComplete, unlinkPersonInit } from "./actions";
 
 function* requestCurrentPeople() {
   const people: PersonDTO[] = yield call(api.getPeople);
@@ -38,9 +38,23 @@ function* watchUnlinkPersonInit() {
   );
 }
 
+function* watchRecognizePersonInit() {
+  yield takeEvery(
+    PeopleActionType.RecognizePersonInit,
+    function* ({ payload: faceAreaId }: ReturnType<typeof recognizePersonInit>) {
+      const person: PersonDTO | null = yield call(api.recognizePerson, faceAreaId);
+      yield put(recognizePersonComplete(person));
+      if (person) {
+        yield put(linkPersonInit({ faceAreaId, personId: person.id }))
+      }
+    }
+  );
+}
+
 export default [
   requestCurrentPeople,
   watchAddPersonInit,
   watchLinkPersonInit,
   watchUnlinkPersonInit,
+  watchRecognizePersonInit,
 ];

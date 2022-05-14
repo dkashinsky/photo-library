@@ -21,6 +21,7 @@ const api = {
   addPerson: (name: string) => ipcRenderer.invoke('api:addPerson', name),
   linkPerson: (faceAreaId: string, personId: string) => ipcRenderer.invoke('api:linkPerson', faceAreaId, personId),
   unlinkPerson: (faceAreaId: string) => ipcRenderer.invoke('api:unlinkPerson', faceAreaId),
+  recognizePerson: (faceAreaId: string) => ipcRenderer.invoke('api:recognizePerson', faceAreaId),
 };
 
 const bridge = {

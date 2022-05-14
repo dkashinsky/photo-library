@@ -10,12 +10,14 @@ export enum PeopleActionType {
   LinkPersonComplete = '[People] Link Person - Complete',
   UnlinkPersonInit = '[People] Unlink Person - Init',
   UnlinkPersonComplete = '[People] Unlink Person - Complete',
+  RecognizePersonInit = '[People] Recognize Person - Init',
+  RecognizePersonComplete = '[People] Recognize Person - Complete',
 }
 
 export type FaceAreaToPersonLink = {
   faceAreaId: string;
   personId: string;
-  asReference: boolean;
+  asReference?: boolean;
 }
 
 export const getPeopleInit: Action<typeof PeopleActionType.GetPeopleInit> = () => ({
@@ -57,6 +59,16 @@ export const unlinkPersonComplete: PayloadAction<typeof PeopleActionType.UnlinkP
   payload: item,
 });
 
+export const recognizePersonInit: PayloadAction<typeof PeopleActionType.RecognizePersonInit, string> = (faceAreaId) => ({
+  type: PeopleActionType.RecognizePersonInit,
+  payload: faceAreaId,
+});
+
+export const recognizePersonComplete: PayloadAction<typeof PeopleActionType.RecognizePersonComplete, PersonDTO | null> = (item) => ({
+  type: PeopleActionType.RecognizePersonComplete,
+  payload: item,
+});
+
 export type PeopleAction =
   | ReturnType<typeof getPeopleInit>
   | ReturnType<typeof getPeopleComplete>
@@ -65,4 +77,6 @@ export type PeopleAction =
   | ReturnType<typeof linkPersonInit>
   | ReturnType<typeof linkPersonComplete>
   | ReturnType<typeof unlinkPersonInit>
-  | ReturnType<typeof unlinkPersonComplete>;
+  | ReturnType<typeof unlinkPersonComplete>
+  | ReturnType<typeof recognizePersonInit>
+  | ReturnType<typeof recognizePersonComplete>;

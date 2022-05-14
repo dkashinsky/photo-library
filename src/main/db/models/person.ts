@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types';
 import { FaceArea } from './face-area';
+import { PersonDescriptorRef } from './person-descriptor-ref';
 
 type PersonAttributes = {
   id: string;
@@ -24,4 +25,7 @@ export class Person extends Model<PersonAttributes, PersonCreationAttributes> {
 
   @HasMany(() => FaceArea)
   faceAreas?: FaceArea[];
+
+  @HasMany(() => PersonDescriptorRef)
+  descriptorRefs?: Array<PersonDescriptorRef>;
 }
