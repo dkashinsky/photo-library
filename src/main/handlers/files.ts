@@ -51,7 +51,7 @@ export const processFile = async (fileId: string) => {
   if (!file.isProcessed) {
     const faceDetections = await detectFaces(file.path);
 
-    for (const detection of faceDetections) {
+    for (const { detection } of faceDetections) {
       const { x, y, width, height } = detection.relativeBox;
       const faceArea = await FaceArea.create({
         fileId,
