@@ -15,6 +15,7 @@ export enum PeopleActionType {
 export type FaceAreaToPersonLink = {
   faceAreaId: string;
   personId: string;
+  asReference: boolean;
 }
 
 export const getPeopleInit: Action<typeof PeopleActionType.GetPeopleInit> = () => ({

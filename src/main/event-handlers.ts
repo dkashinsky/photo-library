@@ -3,6 +3,12 @@ import { addDirectory, getDirectories, processDirectory } from './handlers/folde
 import { getFile, getFiles, linkFaceAreaToPerson, processFile, unlinkFaceAreaFromPerson } from './handlers/files';
 import { addPerson, getPeople } from './handlers/people';
 
+export type LinkPersonRequest = {
+  faceAreaId: string;
+  personId: string;
+  asReference?: boolean;
+}
+
 export const registerEventHandlers = (mainWindow: BrowserWindow) => {
   ipcMain.handle('api:addDirectory', async () => {
     const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
@@ -44,8 +50,10 @@ export const registerEventHandlers = (mainWindow: BrowserWindow) => {
     return await addPerson(name);
   });
 
-  ipcMain.handle('api:linkPerson', async (_, faceAreaId: string, personId: string) => {
-    return await linkFaceAreaToPerson(faceAreaId, personId);
+  ipcMain.handle('api:linkPerson', async (_, linkRequest: LinkPersonRequest) => {
+    const { faceAreaId, personId, asReference } = linkRequest;
+
+    return await linkFaceAreaToPerson(faceAreaId, personId, asReference);
   });
 
   ipcMain.handle('api:unlinkPerson', async (_, faceAreaId: string) => {

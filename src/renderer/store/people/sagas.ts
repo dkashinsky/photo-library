@@ -21,9 +21,8 @@ function* watchAddPersonInit() {
 function* watchLinkPersonInit() {
   yield takeEvery(
     PeopleActionType.LinkPersonInit,
-    function* (action: ReturnType<typeof linkPersonInit>) {
-      const { faceAreaId, personId } = action.payload;
-      const updatedFileInfo: FileInfoExtendedDTO = yield call(api.linkPerson, faceAreaId, personId);
+    function* ({ payload: linkRequest }: ReturnType<typeof linkPersonInit>) {
+      const updatedFileInfo: FileInfoExtendedDTO = yield call(api.linkPerson, linkRequest);
       yield put(linkPersonComplete(updatedFileInfo));
     }
   );

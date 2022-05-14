@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Box, Button, ButtonProps, styled, Typography } from "@mui/material";
-import { FaceAreaDTO, PersonDTO } from '../../../preload/preload';
-import { PersonDialog } from '../person-dialog/PersonDialog';
+import { FaceAreaDTO } from '../../../preload/preload';
+import { PersonDialog, PersonDialogConfirmation } from '../person-dialog/PersonDialog';
 import { useDispatch } from 'react-redux';
 import { linkPersonInit, unlinkPersonInit } from '../../store/people/actions';
 
@@ -22,11 +22,12 @@ export const FaceAreaActions = ({ faceArea }: FaceAreaActionsProps) => {
   const [open, setOpen] = useState(false);
   const toggleOpen = useCallback(() => setOpen(state => !state), []);
 
-  const handleConfirm = useCallback((person: PersonDTO) => {
+  const handleConfirm = useCallback(({ person, asReference }: PersonDialogConfirmation) => {
     setOpen(false);
     dispatch(linkPersonInit({
       faceAreaId: faceArea.id,
       personId: person.id,
+      asReference,
     }));
   }, [dispatch, faceArea]);
 
@@ -52,7 +53,6 @@ export const FaceAreaActions = ({ faceArea }: FaceAreaActionsProps) => {
           Unlink
         </StyledButton>
       )}
-
 
       <PersonDialog
         open={open}
