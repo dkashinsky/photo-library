@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import { FaceArea, File, PersonDescriptorRef } from '../db';
 import { getFaceAreaDTO } from './face-areas';
-import { detectFaces, matchFaces } from '../face-api/detection';
+import { detectFaces, matchFace, PersonMatcher } from '../face-api/detection';
 import { groupBy } from './utils/group-by';
 import { getPerson } from './people';
 
@@ -94,18 +94,25 @@ export const processFile = async (fileId: string) => {
   if (!file.isProcessed) {
     const faceDetections = await detectFaces(file.path);
 
-    for (const { detection, descriptor } of faceDetections) {
-      const { x, y, width, height } = detection.relativeBox;
-      const faceArea = await FaceArea.create({
-        fileId,
-        x,
-        y,
-        width,
-        height,
-        descriptor,
-      });
+    if (faceDetections.length) {
+      const descriptorsByPersonId = await getDescriptorsByPersonId();
+      const matcher = new PersonMatcher(descriptorsByPersonId);
 
-      file.faceAreas.push(faceArea);
+      for (const { detection, descriptor } of faceDetections) {
+        const { x, y, width, height } = detection.relativeBox;
+        const personId = matcher.matchDescriptor(descriptor)?.personId;
+        const faceArea = await FaceArea.create({
+          fileId,
+          x,
+          y,
+          width,
+          height,
+          descriptor,
+          personId,
+        });
+
+        file.faceAreas.push(faceArea);
+      }
     }
 
     file.isProcessed = true;
@@ -157,16 +164,21 @@ export const unlinkFaceAreaFromPerson = async (faceAreaId: string) => {
   return await setFaceAreaPerson(faceAreaId, null);
 };
 
-export const recognizeFaceArea = async (faceAreaId: string) => {
-  const faceArea = await FaceArea.findByPk(faceAreaId, { rejectOnEmpty: true });
+export const getDescriptorsByPersonId = async () => {
   const descriptors = await PersonDescriptorRef.findAll({
     include: [FaceArea],
   });
-  const descriptorsByPersonId = groupBy(descriptors, 'personId', (item) => {
+
+  return groupBy(descriptors, 'personId', (item) => {
     return item.faceArea.descriptor;
   });
+};
 
-  const match = matchFaces(faceArea.descriptor, descriptorsByPersonId);
+export const recognizeFaceArea = async (faceAreaId: string) => {
+  const faceArea = await FaceArea.findByPk(faceAreaId, { rejectOnEmpty: true });
+  const descriptorsByPersonId = await getDescriptorsByPersonId();
+
+  const match = matchFace(faceArea.descriptor, descriptorsByPersonId);
 
   return match
     ? await getPerson(match.personId)

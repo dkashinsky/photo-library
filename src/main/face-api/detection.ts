@@ -23,19 +23,39 @@ export const detectFaces = async (filePath: string) => {
   }));
 };
 
-export const matchFaces = (
+// Person matcher. Works as a wrapper around faceapi.FaceMatcher without throwing on empty input
+export class PersonMatcher {
+  private matcher: faceapi.FaceMatcher | null = null;
+
+  constructor(refData: Record<string, number[][]>) {
+    const labeledDescriptors = Object.keys(refData).map(personId => {
+      const descriptors = refData[personId].map(descriptor => new Float32Array(descriptor));
+      return new faceapi.LabeledFaceDescriptors(personId, descriptors);
+    });
+
+    // only instantiate matcher when there are reference descriptors
+    if (labeledDescriptors.length) {
+      this.matcher = new faceapi.FaceMatcher(labeledDescriptors);
+    }
+  }
+
+  matchDescriptor(faceDescriptor: number[]) {
+    if (!this.matcher) {
+      // silently return null as there is nothing to match with
+      return null;
+    }
+
+    const match = this.matcher.matchDescriptor(new Float32Array(faceDescriptor));
+
+    return match.distance < this.matcher.distanceThreshold
+      ? { personId: match.label, distance: match.distance }
+      : null;
+  }
+}
+
+export const matchFace = (
   faceDescriptor: number[],
   referenceData: Record<string, number[][]>,
 ) => {
-  const labeledDescriptors = Object.keys(referenceData).map(personId => {
-    const descriptors = referenceData[personId].map(descriptor => new Float32Array(descriptor));
-    return new faceapi.LabeledFaceDescriptors(personId, descriptors);
-  });
-  const matcher = new faceapi.FaceMatcher(labeledDescriptors);
-  const match = matcher.matchDescriptor(new Float32Array(faceDescriptor));
-
-
-  return match.distance < matcher.distanceThreshold
-    ? { personId: match.label, distance: match.distance }
-    : null;
+  return new PersonMatcher(referenceData).matchDescriptor(faceDescriptor);
 };
