@@ -16,8 +16,8 @@ import { selectExtendedFilesById } from "./selectors";
 function* watchGetFilesInit() {
   yield takeEvery(
     FilesActionType.GetFilesInit,
-    function* ({ payload: directoryId }: ReturnType<typeof getFilesInit>) {
-      const files: FileInfoDTO[] = yield call(api.getFiles, { directoryId });
+    function* ({ payload: filesRequest }: ReturnType<typeof getFilesInit>) {
+      const files: FileInfoDTO[] = yield call(api.getFiles, filesRequest);
       yield put(getFilesComplete(files));
     }
   );

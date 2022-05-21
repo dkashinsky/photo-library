@@ -41,8 +41,8 @@ export type LinkPersonRequest = {
 
 export type FilesRequest = {
   directoryId: string;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: Date | null;
+  endDate?: Date | null;
 }
 
 export interface ElectronBridge {
