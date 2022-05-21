@@ -39,6 +39,12 @@ export type LinkPersonRequest = {
   asReference?: boolean;
 }
 
+export type FilesRequest = {
+  directoryId: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
+}
+
 export interface ElectronBridge {
   versions: {
     chrome: string;
@@ -49,7 +55,7 @@ export interface ElectronBridge {
     addDirectory: () => Promise<DirectoryInfoDTO | null>;
     processDirectory: (directoryId: string) => Promise<DirectoryInfoDTO>;
     getDirectories: () => Promise<DirectoryInfoDTO[]>;
-    getFiles: (directoryId: string) => Promise<FileInfoDTO[]>;
+    getFiles: (filesRequest: FilesRequest) => Promise<FileInfoDTO[]>;
     getFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
     processFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
     getPeople: () => Promise<PersonDTO[]>;

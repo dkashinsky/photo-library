@@ -1,3 +1,5 @@
+import { LocalizationProvider } from '@mui/lab';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Box from '@mui/material/Box';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -17,14 +19,16 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 const App: React.FC = () => {
   return (
-    <Provider store={store}>
-      <BridgeProvider value={window.bridge}>
-        <StyledBox>
-          <Sidebar />
-          <Content />
-        </StyledBox>
-      </BridgeProvider>
-    </Provider>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Provider store={store}>
+        <BridgeProvider value={window.bridge}>
+          <StyledBox>
+            <Sidebar />
+            <Content />
+          </StyledBox>
+        </BridgeProvider>
+      </Provider>
+    </LocalizationProvider>
   );
 };
 

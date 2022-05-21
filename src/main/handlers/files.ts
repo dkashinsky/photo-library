@@ -1,8 +1,21 @@
-import { FaceArea, File, Person, PersonDescriptorRef } from '../db';
+import { Op } from 'sequelize';
+import { FaceArea, File, PersonDescriptorRef } from '../db';
 import { getFaceAreaDTO } from './face-areas';
 import { detectFaces, matchFaces } from '../face-api/detection';
 import { groupBy } from './utils/group-by';
 import { getPerson } from './people';
+
+export type FilesRequest = {
+  directoryId: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
+}
+
+export type LinkPersonRequest = {
+  faceAreaId: string;
+  personId: string;
+  asReference?: boolean;
+}
 
 const getFileInfoDTO = (file: File) => ({
   id: file.id,
@@ -19,9 +32,21 @@ const getFileInfoExtendedDTO = (file: File) => ({
   faceAreas: file.faceAreas.map(getFaceAreaDTO)
 });
 
-export const getFiles = async (folderId: string) => {
+export const getFiles = async ({ directoryId, startDate, endDate }: FilesRequest) => {
+  const dateFilter = startDate || endDate
+    ? {
+      createDate: {
+        ...(startDate ? { [Op.gte]: startDate } : null),
+        ...(endDate ? { [Op.lte]: endDate } : null),
+      }
+    }
+    : null;
+
   const files = await File.findAll({
-    where: { folderId },
+    where: {
+      folderId: directoryId,
+      ...dateFilter,
+    },
     order: [['createDate', 'DESC']],
   });
 
@@ -102,7 +127,9 @@ const setPersonReference = async (personId: string, faceAreaId: string) => {
   }
 };
 
-export const linkFaceAreaToPerson = async (faceAreaId: string, personId: string, asReference?: boolean) => {
+export const linkFaceAreaToPerson = async (linkRequest: LinkPersonRequest) => {
+  const { faceAreaId, personId, asReference } = linkRequest;
+
   if (asReference) {
     await setPersonReference(personId, faceAreaId);
   }

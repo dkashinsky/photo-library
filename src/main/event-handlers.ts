@@ -1,13 +1,7 @@
 import { ipcMain, dialog, BrowserWindow } from 'electron';
 import { addDirectory, getDirectories, processDirectory } from './handlers/folders';
-import { getFile, getFiles, linkFaceAreaToPerson, processFile, recognizeFaceArea, unlinkFaceAreaFromPerson } from './handlers/files';
+import { FilesRequest, getFile, getFiles, linkFaceAreaToPerson, LinkPersonRequest, processFile, recognizeFaceArea, unlinkFaceAreaFromPerson } from './handlers/files';
 import { addPerson, getPeople } from './handlers/people';
-
-export type LinkPersonRequest = {
-  faceAreaId: string;
-  personId: string;
-  asReference?: boolean;
-}
 
 export const registerEventHandlers = (mainWindow: BrowserWindow) => {
   ipcMain.handle('api:addDirectory', async () => {
@@ -30,8 +24,8 @@ export const registerEventHandlers = (mainWindow: BrowserWindow) => {
     return await processDirectory(directoryId);
   });
 
-  ipcMain.handle('api:getFiles', async (_, directoryId: string) => {
-    return await getFiles(directoryId);
+  ipcMain.handle('api:getFiles', async (_, filesRequest: FilesRequest) => {
+    return await getFiles(filesRequest);
   });
 
   ipcMain.handle('api:getFile', async (_, fileId: string) => {
@@ -51,9 +45,7 @@ export const registerEventHandlers = (mainWindow: BrowserWindow) => {
   });
 
   ipcMain.handle('api:linkPerson', async (_, linkRequest: LinkPersonRequest) => {
-    const { faceAreaId, personId, asReference } = linkRequest;
-
-    return await linkFaceAreaToPerson(faceAreaId, personId, asReference);
+    return await linkFaceAreaToPerson(linkRequest);
   });
 
   ipcMain.handle('api:unlinkPerson', async (_, faceAreaId: string) => {

@@ -1,4 +1,4 @@
-import { FileInfoDTO, FileInfoExtendedDTO } from "../../../preload/preload";
+import { FileInfoDTO, FileInfoExtendedDTO, FilesRequest } from "../../../preload/preload";
 import { Action, PayloadAction } from "../utils";
 
 export enum FilesActionType {
@@ -10,15 +10,17 @@ export enum FilesActionType {
   GetExtendedFileComplete = '[Files] Get Extended File - Complete',
   ProcessFileInit = '[Files] Process File - Init',
   ProcessFileComplete = '[Files] Process File - Complete',
+  SetStartDateFilter = '[Files] Set Start Date Filter',
+  SetEndDateFilter = '[Files] Set End Date Filter',
 }
 
 export const resetFiles: Action<typeof FilesActionType.ResetFiles> = () => ({
   type: FilesActionType.ResetFiles,
 });
 
-export const getFilesInit: PayloadAction<typeof FilesActionType.GetFilesInit, string> = (id) => ({
+export const getFilesInit: PayloadAction<typeof FilesActionType.GetFilesInit, FilesRequest> = (request) => ({
   type: FilesActionType.GetFilesInit,
-  payload: id,
+  payload: request,
 });
 
 export const getFilesComplete: PayloadAction<typeof FilesActionType.GetFilesComplete, FileInfoDTO[]> = (item) => ({
@@ -51,6 +53,16 @@ export const processFileComplete: PayloadAction<typeof FilesActionType.ProcessFi
   payload: item,
 });
 
+export const setStartDateFilter: PayloadAction<typeof FilesActionType.SetStartDateFilter, Date | null> = (startDate) => ({
+  type: FilesActionType.SetStartDateFilter,
+  payload: startDate,
+});
+
+export const setEndDateFilter: PayloadAction<typeof FilesActionType.SetEndDateFilter, Date | null> = (endDate) => ({
+  type: FilesActionType.SetEndDateFilter,
+  payload: endDate,
+});
+
 export type FilesAction =
   | ReturnType<typeof selectFileId>
   | ReturnType<typeof resetFiles>
@@ -59,4 +71,6 @@ export type FilesAction =
   | ReturnType<typeof getExtendedFileInit>
   | ReturnType<typeof getExtendedFileComplete>
   | ReturnType<typeof processFileInit>
-  | ReturnType<typeof processFileComplete>;
+  | ReturnType<typeof processFileComplete>
+  | ReturnType<typeof setStartDateFilter>
+  | ReturnType<typeof setEndDateFilter>;

@@ -8,6 +8,8 @@ type FilesState = {
   files: FileInfoDTO[];
   isLoading: boolean;
   selectedId: string | null;
+  startDate: Date | null;
+  endDate: Date | null;
   processingById: ItemsById<boolean>;
   extendedFilesById: ItemsById<FileInfoExtendedDTO>;
 }
@@ -16,6 +18,8 @@ const INITIAL_STATE: FilesState = {
   files: [],
   isLoading: false,
   selectedId: null,
+  startDate: null,
+  endDate: null,
   processingById: {},
   extendedFilesById: {},
 };
@@ -102,10 +106,36 @@ function extendedFilesByIdReducer(
   }
 }
 
+function startDateReducer(
+  state: FilesState['startDate'] = INITIAL_STATE.startDate,
+  action: FilesAction,
+): FilesState['startDate'] {
+  switch (action.type) {
+    case FilesActionType.SetStartDateFilter:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+function endDateReducer(
+  state: FilesState['startDate'] = INITIAL_STATE.endDate,
+  action: FilesAction,
+): FilesState['startDate'] {
+  switch (action.type) {
+    case FilesActionType.SetEndDateFilter:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   files: filesReducer,
   isLoading: isLoadingReducer,
   selectedId: selectedIdReducer,
   processingById: processingByIdReducer,
   extendedFilesById: extendedFilesByIdReducer,
+  startDate: startDateReducer,
+  endDate: endDateReducer,
 });
