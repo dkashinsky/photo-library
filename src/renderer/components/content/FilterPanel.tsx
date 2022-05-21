@@ -38,6 +38,7 @@ export const FilterPanel = () => {
         value={startDate}
         onChange={(date) => dispatch(setStartDateFilter(date))}
         renderInput={(params) => <StyledInput size='small' {...params} />}
+        clearable
       />
       <DesktopDatePicker
         label="End Date"
@@ -45,6 +46,7 @@ export const FilterPanel = () => {
         value={endDate}
         onChange={(date) => dispatch(setEndDateFilter(date))}
         renderInput={(params) => <StyledInput size='small' {...params} />}
+        clearable
       />
       <Autocomplete
         size='small'

@@ -43,6 +43,7 @@ export type FilesRequest = {
   directoryId: string;
   startDate?: Date | null;
   endDate?: Date | null;
+  peopleIds?: string[];
 }
 
 export interface ElectronBridge {
