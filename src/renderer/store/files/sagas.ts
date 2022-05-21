@@ -17,7 +17,7 @@ function* watchGetFilesInit() {
   yield takeEvery(
     FilesActionType.GetFilesInit,
     function* ({ payload: directoryId }: ReturnType<typeof getFilesInit>) {
-      const files: FileInfoDTO[] = yield call(api.getFiles, directoryId);
+      const files: FileInfoDTO[] = yield call(api.getFiles, { directoryId });
       yield put(getFilesComplete(files));
     }
   );
