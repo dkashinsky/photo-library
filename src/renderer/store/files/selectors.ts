@@ -1,4 +1,5 @@
 import { createSelector } from "reselect";
+import { selectPeopleById } from "../people/selectors";
 import { RootState } from "../store";
 import { itemsById } from "../utils";
 
@@ -10,3 +11,8 @@ export const selectProcessingById = (state: RootState) => state.files.processing
 export const selectExtendedFilesById = (state: RootState) => state.files.extendedFilesById;
 export const selectStartDateFilter = (state: RootState) => state.files.startDate;
 export const selectEndDateFilter = (state: RootState) => state.files.endDate;
+export const selectPeopleIdsFilter = (state: RootState) => state.files.peopleIds;
+export const selectPeopleFilter = createSelector(
+  [selectPeopleIdsFilter, selectPeopleById],
+  (peopleIdsFilter, peopleByIds) => peopleIdsFilter.map(id => peopleByIds[id]!),
+);

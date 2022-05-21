@@ -12,6 +12,7 @@ export enum FilesActionType {
   ProcessFileComplete = '[Files] Process File - Complete',
   SetStartDateFilter = '[Files] Set Start Date Filter',
   SetEndDateFilter = '[Files] Set End Date Filter',
+  SetPeopleFilter = '[Files] Set People Filter',
 }
 
 export const resetFiles: Action<typeof FilesActionType.ResetFiles> = () => ({
@@ -63,6 +64,11 @@ export const setEndDateFilter: PayloadAction<typeof FilesActionType.SetEndDateFi
   payload: endDate,
 });
 
+export const setPeopleFilter: PayloadAction<typeof FilesActionType.SetPeopleFilter, string[]> = (people) => ({
+  type: FilesActionType.SetPeopleFilter,
+  payload: people,
+});
+
 export type FilesAction =
   | ReturnType<typeof selectFileId>
   | ReturnType<typeof resetFiles>
@@ -73,4 +79,5 @@ export type FilesAction =
   | ReturnType<typeof processFileInit>
   | ReturnType<typeof processFileComplete>
   | ReturnType<typeof setStartDateFilter>
-  | ReturnType<typeof setEndDateFilter>;
+  | ReturnType<typeof setEndDateFilter>
+  | ReturnType<typeof setPeopleFilter>;

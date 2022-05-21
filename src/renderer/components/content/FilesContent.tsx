@@ -5,6 +5,7 @@ import {
   selectEndDateFilter,
   selectFiles,
   selectFilesLoading,
+  selectPeopleIdsFilter,
   selectStartDateFilter,
 } from '../../store/files/selectors';
 import { getFilesInit } from '../../store/files/actions';
@@ -26,6 +27,7 @@ export const FilesContent = ({ folderId }: FilesContentProps) => {
   const folder = useSelector(selectLocationsById)[folderId];
   const startDate = useSelector(selectStartDateFilter);
   const endDate = useSelector(selectEndDateFilter);
+  const peopleIds = useSelector(selectPeopleIdsFilter);
   const files = useSelector(selectFiles);
   const filesLoading = useSelector(selectFilesLoading);
   const dispatch = useDispatch();
@@ -36,9 +38,10 @@ export const FilesContent = ({ folderId }: FilesContentProps) => {
         directoryId: folder.id,
         startDate,
         endDate,
+        peopleIds,
       }));
     }
-  }, [folder, startDate, endDate]);
+  }, [folder, startDate, endDate, peopleIds]);
 
   return (
     <StyledBox>

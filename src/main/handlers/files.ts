@@ -9,6 +9,7 @@ export type FilesRequest = {
   directoryId: string;
   startDate?: Date | null;
   endDate?: Date | null;
+  peopleIds?: string[];
 }
 
 export type LinkPersonRequest = {
@@ -32,7 +33,8 @@ const getFileInfoExtendedDTO = (file: File) => ({
   faceAreas: file.faceAreas.map(getFaceAreaDTO)
 });
 
-export const getFiles = async ({ directoryId, startDate, endDate }: FilesRequest) => {
+export const getFiles = async ({ directoryId, startDate, endDate, peopleIds }: FilesRequest) => {
+  // Produce filter to reduce files whose create date is in the specified range.
   const dateFilter = startDate || endDate
     ? {
       createDate: {
@@ -42,11 +44,25 @@ export const getFiles = async ({ directoryId, startDate, endDate }: FilesRequest
     }
     : null;
 
+  // Produce inclusion so that when used, files will be reduced to those,
+  // whose face areas satisfy specified people. Uses inner join under the hood.
+  const includePeople = {
+    model: FaceArea,
+    where: {
+      personId: peopleIds,
+    },
+    attributes: ['id'],
+    required: true,
+  };
+
   const files = await File.findAll({
     where: {
       folderId: directoryId,
       ...dateFilter,
     },
+    include: peopleIds?.length
+      ? includePeople
+      : undefined,
     order: [['createDate', 'DESC']],
   });
 

@@ -10,6 +10,7 @@ type FilesState = {
   selectedId: string | null;
   startDate: Date | null;
   endDate: Date | null;
+  peopleIds: string[];
   processingById: ItemsById<boolean>;
   extendedFilesById: ItemsById<FileInfoExtendedDTO>;
 }
@@ -20,6 +21,7 @@ const INITIAL_STATE: FilesState = {
   selectedId: null,
   startDate: null,
   endDate: null,
+  peopleIds: [],
   processingById: {},
   extendedFilesById: {},
 };
@@ -130,6 +132,18 @@ function endDateReducer(
   }
 }
 
+function peopleIdsReducer(
+  state: FilesState['peopleIds'] = INITIAL_STATE.peopleIds,
+  action: FilesAction,
+): FilesState['peopleIds'] {
+  switch (action.type) {
+    case FilesActionType.SetPeopleFilter:
+      return [...action.payload];
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   files: filesReducer,
   isLoading: isLoadingReducer,
@@ -138,4 +152,5 @@ export default combineReducers({
   extendedFilesById: extendedFilesByIdReducer,
   startDate: startDateReducer,
   endDate: endDateReducer,
+  peopleIds: peopleIdsReducer,
 });
