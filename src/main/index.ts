@@ -1,8 +1,10 @@
+import path from 'path';
 import { app, BrowserWindow } from 'electron';
 import { createMainWindow } from './main-window';
 import { registerEventHandlers } from './event-handlers';
 import { initDB } from './db';
 import { initFaceAPI } from './face-api';
+import { config } from './config';
 
 let mainWindow = null;
 
@@ -11,7 +13,10 @@ app.whenReady()
   .then(initFaceAPI)
   .then(() => {
     mainWindow = createMainWindow();
-    mainWindow.loadURL('http://localhost:3000');
+
+    const rendererLoading = config.useLocalhost
+      ? mainWindow.loadURL('http://localhost:3000')
+      : mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
 
     registerEventHandlers(mainWindow);
 
@@ -20,6 +25,8 @@ app.whenReady()
         mainWindow = createMainWindow();
       }
     });
+
+    return rendererLoading;
   });
 
 app.on('window-all-closed', () => {
