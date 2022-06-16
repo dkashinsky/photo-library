@@ -27,5 +27,5 @@ export class Folder extends Model<FolderAttributes, FolderCreationAttributes> {
   isProcessed!: boolean;
 
   @HasMany(() => File)
-  faceAreas!: File[];
+  files!: File[];
 }
