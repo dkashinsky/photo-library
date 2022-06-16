@@ -3,12 +3,18 @@
   "private": true,
   "version": "0.0.1",
   "description": "Electron app to easily manage photographs and find people",
+  "main": "dist/main/index.js",
   "scripts": {
-    "start:web": "vite serve ./src/renderer",
-    "start:shell": "npm run build:shell && electron ./dist/main/index.js",
+    "start:web": "vite serve",
+    "start:shell": "npm run build:shell && electron-forge start -- --localhost --in-memory-store",
     "start": "npm-run-all --parallel start:*",
+    "build:web": "vite build",
     "build:shell": "tsc -p electron.tsconfig.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build:shell && npm run build:web",
+    "forge": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "repository": {
     "type": "git",
@@ -25,11 +31,15 @@
     "url": "https://github.com/dkashinsky/photo-library/issues"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
-    "@types/react-table": "^7.7.10",
     "@vitejs/plugin-react": "^1.3.0",
-    "electron": "^18.0.1",
+    "electron": "^19.0.4",
     "npm-run-all": "^4.1.5",
     "typescript": "^4.6.3",
     "vite": "^2.9.1"
@@ -39,22 +49,24 @@
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@fsdk/face-api-node": "^0.22.3",
-    "@fsdk/tree-utils": "^0.0.1",
     "@mui/icons-material": "^5.5.1",
     "@mui/lab": "^5.0.0-alpha.79",
     "@mui/material": "^5.5.3",
     "@mui/x-date-pickers": "^5.0.0-alpha.4",
     "@tensorflow/tfjs-node": "^3.16.0",
     "date-fns": "^2.28.0",
+    "electron-squirrel-startup": "^1.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.8",
-    "react-table": "^7.7.0",
     "redux": "^4.1.2",
     "redux-saga": "^1.1.3",
     "reselect": "^4.1.5",
     "sequelize": "^6.19.0",
     "sequelize-typescript": "^2.1.3",
     "sqlite3": "^5.0.2"
+  },
+  "config": {
+    "forge": "./forge.config.js"
   }
 }
