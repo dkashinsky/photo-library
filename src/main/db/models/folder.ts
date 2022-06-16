@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript'
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types';
+import { File } from './file';
 
 type FolderAttributes = {
   id: string;
@@ -24,4 +25,7 @@ export class Folder extends Model<FolderAttributes, FolderCreationAttributes> {
 
   @Column({ allowNull: false, defaultValue: false })
   isProcessed!: boolean;
+
+  @HasMany(() => File)
+  faceAreas!: File[];
 }

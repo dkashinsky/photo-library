@@ -105,3 +105,6 @@ dist
 
 # electron forge
 out
+
+# db
+*.sqlite

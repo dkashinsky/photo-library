@@ -1,7 +1,8 @@
-import { resolve } from 'path';
+import { join } from 'path';
 import * as faceapi from '@fsdk/face-api-node';
+import { config } from '../config';
 
-const assetsPath = resolve(__dirname, '../../../assets/ml');
+const assetsPath = join(config.assetsPath, 'ml');
 
 export const initFaceAPI = async () => {
   await faceapi.nets.ssdMobilenetv1.loadFromDisk(assetsPath);
