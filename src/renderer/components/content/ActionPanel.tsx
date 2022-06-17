@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Divider, IconButton, styled, Tooltip } from "@mui/material";
+import { Box, CircularProgress, IconButton, styled, Tooltip } from "@mui/material";
 import TagFacesIcon from '@mui/icons-material/TagFaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { recognizeFilesInit } from '../../store/locations/actions';
@@ -27,7 +27,9 @@ export const ActionPanel = ({ folderId }: ActionPanelProps) => {
           onClick={() => dispatch(recognizeFilesInit(folderId))}
           disabled={isRecognizing}
         >
-          <TagFacesIcon />
+          {isRecognizing
+            ? <CircularProgress size={24} />
+            : <TagFacesIcon />}
         </IconButton>
       </Tooltip>
     </StyledBox>

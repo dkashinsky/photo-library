@@ -1,6 +1,7 @@
 import { basename } from 'path';
 import { Folder, File } from '../db';
 import directoryFilesWalker from './utils/directory-walker';
+import { processFile } from './files';
 
 const getDirectoryInfoDTO = (folder: Folder) => ({
   id: folder.id,
@@ -47,7 +48,26 @@ export const processDirectory = async (directoryId: string) => {
 };
 
 export const recognizeDirectory = async (directoryId: string) => {
-  const folder = await Folder.findByPk(directoryId);
+  const files = await File.findAll({
+    where: {
+      folderId: directoryId,
+      isProcessed: false,
+    },
+  });
 
-  return folder !== null;
+  const counters = {
+    total: files.length,
+    successfull: 0,
+  };
+
+  for (let file of files) {
+    try {
+      await processFile(file.id);
+      counters.successfull += 1;
+    } catch { }
+  }
+
+  console.log(counters)
+
+  return counters;
 };
