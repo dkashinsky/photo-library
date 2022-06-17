@@ -7,6 +7,8 @@ import {
   addLocationItemComplete,
   processLocationItemInit,
   processLocationItemComplete,
+  recognizeFilesInit,
+  recognizeFilesComplete,
 } from "./actions";
 
 function* requestCurrentLocations() {
@@ -40,8 +42,19 @@ function* watchAddLocationItemComplete() {
   );
 }
 
+function* watchBatchRecognitionInit() {
+  yield takeEvery(
+    LocationsActionType.RecognizeFilesInit,
+    function* ({ payload: folderId }: ReturnType<typeof recognizeFilesInit>) {
+      yield call(api.recognizeDirectory, folderId);
+      yield put(recognizeFilesComplete(folderId));
+    }
+  );
+}
+
 export default [
   requestCurrentLocations,
   watchAddLocationItemInit,
   watchAddLocationItemComplete,
+  watchBatchRecognitionInit,
 ];

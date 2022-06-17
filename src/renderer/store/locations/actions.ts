@@ -9,6 +9,8 @@ export enum LocationsActionType {
   ReceiveItems = '[Location] Receive Items',
   ProcessItemInit = '[Location] Process Item - Init',
   ProcessItemComplete = '[Location] Process Item - Complete',
+  RecognizeFilesInit = '[Location] Recognize Files In Batch - Init',
+  RecognizeFilesComplete = '[Location] Recognize Files In Batch - Complete',
 }
 
 export const addLocationItemInit: Action<typeof LocationsActionType.AddItemInit> = () => ({
@@ -44,6 +46,16 @@ export const selectLocationItem: PayloadAction<typeof LocationsActionType.Select
   payload: id,
 });
 
+export const recognizeFilesInit: PayloadAction<typeof LocationsActionType.RecognizeFilesInit, string> = (folderId) => ({
+  type: LocationsActionType.RecognizeFilesInit,
+  payload: folderId,
+});
+
+export const recognizeFilesComplete: PayloadAction<typeof LocationsActionType.RecognizeFilesComplete, string> = (folderId) => ({
+  type: LocationsActionType.RecognizeFilesComplete,
+  payload: folderId,
+});
+
 export type LocationsAction =
   | ReturnType<typeof addLocationItemInit>
   | ReturnType<typeof addLocationItemComplete>
@@ -51,4 +63,6 @@ export type LocationsAction =
   | ReturnType<typeof processLocationItemComplete>
   | ReturnType<typeof selectLocationItem>
   | ReturnType<typeof requestLocationItems>
-  | ReturnType<typeof receiveLocationItems>;
+  | ReturnType<typeof receiveLocationItems>
+  | ReturnType<typeof recognizeFilesInit>
+  | ReturnType<typeof recognizeFilesComplete>;

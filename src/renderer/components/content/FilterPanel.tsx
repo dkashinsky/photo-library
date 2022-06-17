@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { DesktopDatePicker } from "@mui/lab";
 import { Autocomplete, Box, Checkbox, styled, TextField } from "@mui/material";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -12,6 +12,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1),
   display: 'flex',
   justifyContent: 'flex-start',
+  flex: '1 1 auto',
 }));
 
 const StyledInput = styled(TextField)(({ theme }) => ({

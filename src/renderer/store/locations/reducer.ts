@@ -7,12 +7,14 @@ type LocationsState = {
   locations: DirectoryInfoDTO[];
   selectedId: string | null;
   processById: ItemsById<boolean>;
+  recognitionById: ItemsById<boolean>;
 }
 
 const INITIAL_STATE: LocationsState = {
   locations: [],
   selectedId: null,
   processById: {},
+  recognitionById: {},
 };
 
 function locationsReducer(
@@ -60,8 +62,23 @@ function processByIdReducer(
   }
 }
 
+function recognitionByIdReducer(
+  state: ItemsById<boolean> = INITIAL_STATE.recognitionById,
+  action: LocationsAction,
+): ItemsById<boolean> {
+  switch (action.type) {
+    case LocationsActionType.RecognizeFilesInit:
+      return { ...state, [action.payload]: true };
+    case LocationsActionType.RecognizeFilesComplete:
+      return { ...state, [action.payload]: false };
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   locations: locationsReducer,
   selectedId: selectedIdReducer,
   processById: processByIdReducer,
+  recognitionById: recognitionByIdReducer,
 });

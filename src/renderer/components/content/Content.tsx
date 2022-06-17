@@ -1,10 +1,11 @@
 import React from 'react';
-import { CircularProgress, Divider, Paper, styled, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Paper, styled, Typography } from "@mui/material";
 import { useSelector } from 'react-redux';
 import { selectLocations, selectProcessById, selectSelectedLocationId } from '../../store/locations/selectors';
 import { FilesContent } from './FilesContent';
 import { FileDialog } from '../file-dialog/FileDialog';
 import { FilterPanel } from './FilterPanel';
+import { ActionPanel } from './ActionPanel';
 
 const StyledPaper = styled(Paper)({
   display: 'flex',
@@ -51,7 +52,13 @@ export const Content = () => {
       display: 'flex',
       flexDirection: 'column',
     }}>
-      <FilterPanel />
+      <Box display='flex'>
+        <FilterPanel />
+        <Box pb={1} pt={1}>
+          <Divider orientation='vertical' />
+        </Box>
+        <ActionPanel folderId={selectedId} />
+      </Box>
       <Divider />
       <FilesContent folderId={selectedId} />
       <FileDialog />

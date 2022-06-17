@@ -14,6 +14,7 @@ const getVersions = () => {
 const api = {
   addDirectory: () => ipcRenderer.invoke('api:addDirectory'),
   processDirectory: (directoryId: string) => ipcRenderer.invoke('api:processDirectory', directoryId),
+  recognizeDirectory: (directoryId: string) => ipcRenderer.invoke('api:recognizeDirectory', directoryId),
   getDirectories: () => ipcRenderer.invoke('api:getDirectories'),
   getFiles: (filesRequest: FilesRequest) => ipcRenderer.invoke('api:getFiles', filesRequest),
   getFile: (fileId: string) => ipcRenderer.invoke('api:getFile', fileId),
