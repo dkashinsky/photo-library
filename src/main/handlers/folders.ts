@@ -45,3 +45,9 @@ export const processDirectory = async (directoryId: string) => {
 
   return getDirectoryInfoDTO(folder);
 };
+
+export const recognizeDirectory = async (directoryId: string) => {
+  const folder = await Folder.findByPk(directoryId);
+
+  return folder !== null;
+};

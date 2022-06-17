@@ -55,6 +55,7 @@ export interface ElectronBridge {
   api: {
     addDirectory: () => Promise<DirectoryInfoDTO | null>;
     processDirectory: (directoryId: string) => Promise<DirectoryInfoDTO>;
+    recognizeDirectory: (directoryId: string) => Promise<void>;
     getDirectories: () => Promise<DirectoryInfoDTO[]>;
     getFiles: (filesRequest: FilesRequest) => Promise<FileInfoDTO[]>;
     getFile: (fileId: string) => Promise<FileInfoExtendedDTO>;
