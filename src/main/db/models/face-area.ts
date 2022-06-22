@@ -13,6 +13,7 @@ type FaceAreaAttributes = {
   descriptor: number[];
   personId?: string;
   age: number;
+  ageCategory: string;
 }
 
 type FaceAreaCreationAttributes = Optional<FaceAreaAttributes, 'id'>
@@ -48,6 +49,9 @@ export class FaceArea extends Model<FaceAreaAttributes, FaceAreaCreationAttribut
 
   @Column({ allowNull: false })
   age!: number;
+
+  @Column({ allowNull: false })
+  ageCategory!: string;
 
   @ForeignKey(() => Person)
   @AllowNull

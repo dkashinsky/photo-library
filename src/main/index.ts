@@ -5,11 +5,13 @@ import { registerEventHandlers } from './event-handlers';
 import { initDB } from './db';
 import { initFaceAPI } from './face-api';
 import { config } from './config';
+import { initKB } from './kb';
 
 let mainWindow = null;
 
 app.whenReady()
   .then(initDB)
+  .then(initKB)
   .then(initFaceAPI)
   .then(() => {
     mainWindow = createMainWindow();

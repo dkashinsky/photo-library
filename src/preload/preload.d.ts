@@ -23,6 +23,7 @@ export type FaceAreaDTO = {
   height: number;
   personId?: string;
   age: number;
+  ageCategory: string;
 }
 
 export type FileInfoExtendedDTO = FileInfoDTO & {

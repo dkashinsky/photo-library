@@ -1,0 +1,100 @@
+@prefix ind:<URN:inds:>.
+@prefix prop:<URN:prop:>.
+@prefix class:<URN:class:>.
+@prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+
+ind:proc0 a class:Process;
+	rdfs:label "PredictAge";
+	rdf:isDefinedBy	"PhotoLibraryGroup";
+	prop:hasKPI ind:kpi0;
+  prop:hasKPI ind:kpi1;
+	prop:hasKPI ind:kpi2;
+	prop:hasKPI ind:kpi3;
+	prop:hasKPI ind:kpi4;
+	prop:hasKPI ind:kpi5;
+	prop:hasKPI ind:kpi6;
+	prop:hasKPI ind:kpi7.
+
+ind:kpi0 prop:kpi ind:proc0;
+	a class:KPI;
+        rdfs:label "AgeGroup0-3";
+        prop:hasInter ind:Interval0.
+
+ind:kpi1 prop:kpi ind:proc0;
+	a class:KPI;
+        rdfs:label "AgeGroup4-8";
+        prop:hasInter ind:Interval1.
+
+ind:kpi2 prop:kpi ind:proc0;
+	a class:KPI;
+        rdfs:label "AgeGroup9-18";
+        prop:hasInter ind:Interval2.
+
+ind:kpi3 prop:kpi ind:proc0;
+	a class:KPI;
+        rdfs:label "AgeGroup19-28";
+        prop:hasInter ind:Interval3.
+
+ind:kpi4 prop:kpi ind:proc0;
+	a class:KPI;
+        rdfs:label "AgeGroup29-40";
+        prop:hasInter ind:Interval4.
+
+ind:kpi5 prop:kpi ind:proc0;
+	a class:KPI;
+        rdfs:label "AgeGroup41-60";
+        prop:hasInter ind:Interval5.
+
+ind:kpi6 prop:kpi ind:proc0;
+	a class:KPI;
+        rdfs:label "AgeGroup61-80";
+        prop:hasInter ind:Interval6.
+
+ind:kpi7 prop:kpi ind:proc0;
+	a class:KPI;
+        rdfs:label "AgeGroup81-100";
+        prop:hasInter ind:Interval7.
+
+ind:Interval0 a class:Interval;
+            prop:measure "Age";
+            prop:hasMin "0"^^xsd:integer;
+            prop:hasMax "3"^^xsd:integer.
+
+ind:Interval1 a class:Interval;
+            prop:measure "Age";
+            prop:hasMin "4"^^xsd:integer;
+            prop:hasMax "8"^^xsd:integer.
+
+ind:Interval2 a class:Interval;
+            prop:measure "Age";
+            prop:hasMin "9"^^xsd:integer;
+            prop:hasMax "18"^^xsd:integer.
+
+ind:Interval3 a class:Interval;
+            prop:measure "Age";
+            prop:hasMin "19"^^xsd:integer;
+            prop:hasMax "28"^^xsd:integer.
+
+ind:Interval4 a class:Interval;
+            prop:measure "Age";
+            prop:hasMin "29"^^xsd:integer;
+            prop:hasMax "40"^^xsd:integer.
+
+ind:Interval5 a class:Interval;
+            prop:measure "Age";
+            prop:hasMin "41"^^xsd:integer;
+            prop:hasMax "60"^^xsd:integer.
+
+ind:Interval6 a class:Interval;
+            prop:measure "Age";
+            prop:hasMin "61"^^xsd:integer;
+            prop:hasMax "80"^^xsd:integer.
+
+ind:Interval7 a class:Interval;
+            prop:measure "Age";
+            prop:hasMin "81"^^xsd:integer;
+            prop:hasMax "100"^^xsd:integer.

@@ -27,7 +27,7 @@ export type ImageAreaHighlighterProps = {
 }
 
 export const ImageAreaHighlighter = ({ x, y, width, height, ...meta }: ImageAreaHighlighterProps) => {
-  const { age } = meta as { age: number };
+  const { age, ageCategory } = meta as { age: number, ageCategory: string };
 
   return (
     <>
@@ -42,6 +42,7 @@ export const ImageAreaHighlighter = ({ x, y, width, height, ...meta }: ImageArea
         top: toPercentScale(y + height),
       }}>
         <StyledTypography>age: {age.toFixed(2)} (predicted)</StyledTypography>
+        <StyledTypography>age category: {ageCategory} (inferred)</StyledTypography>
       </ContentBox>
     </>
   );

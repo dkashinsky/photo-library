@@ -4,6 +4,7 @@ import { getFaceAreaDTO } from './face-areas';
 import { detectFaces, matchFace, PersonMatcher } from '../face-api/detection';
 import { groupBy } from './utils/group-by';
 import { getPerson } from './people';
+import { queryAgeInterval } from '../kb/queries';
 
 export type FilesRequest = {
   directoryId: string;
@@ -100,6 +101,7 @@ export const processFile = async (fileId: string) => {
 
       for (const { detection, descriptor, age } of faceDetections) {
         const { x, y, width, height } = detection.relativeBox;
+        const ageCategory = await queryAgeInterval(age);
         const personId = matcher.matchDescriptor(descriptor)?.personId;
         const faceArea = await FaceArea.create({
           fileId,
@@ -110,6 +112,7 @@ export const processFile = async (fileId: string) => {
           descriptor,
           personId,
           age,
+          ageCategory: ageCategory || 'N/A',
         });
 
         file.faceAreas.push(faceArea);
