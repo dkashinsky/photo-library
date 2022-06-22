@@ -7,6 +7,7 @@ export const getFaceAreaDTO = (faceArea: FaceArea) => ({
   width: faceArea.width,
   height: faceArea.height,
   personId: faceArea.personId,
+  age: faceArea.age,
 });
 
 export const getFileFaces = async (fileId: string) => {

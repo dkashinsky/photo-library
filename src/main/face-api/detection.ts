@@ -13,7 +13,7 @@ export const detectFaces = async (filePath: string) => {
     .detectAllFaces(image, detectionOptions)
     .withFaceLandmarks()
     .withFaceDescriptors()
-    .run();
+    .withAgeAndGender();
 
   image.dispose();
 

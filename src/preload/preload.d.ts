@@ -22,6 +22,7 @@ export type FaceAreaDTO = {
   width: number;
   height: number;
   personId?: string;
+  age: number;
 }
 
 export type FileInfoExtendedDTO = FileInfoDTO & {

@@ -98,7 +98,7 @@ export const processFile = async (fileId: string) => {
       const descriptorsByPersonId = await getDescriptorsByPersonId();
       const matcher = new PersonMatcher(descriptorsByPersonId);
 
-      for (const { detection, descriptor } of faceDetections) {
+      for (const { detection, descriptor, age } of faceDetections) {
         const { x, y, width, height } = detection.relativeBox;
         const personId = matcher.matchDescriptor(descriptor)?.personId;
         const faceArea = await FaceArea.create({
@@ -109,6 +109,7 @@ export const processFile = async (fileId: string) => {
           height,
           descriptor,
           personId,
+          age,
         });
 
         file.faceAreas.push(faceArea);
