@@ -13,7 +13,7 @@ export const detectFaces = async (filePath: string) => {
     .detectAllFaces(image, detectionOptions)
     .withFaceLandmarks()
     .withFaceDescriptors()
-    .run();
+    .withAgeAndGender();
 
   image.dispose();
 
@@ -39,15 +39,16 @@ export class PersonMatcher {
     }
   }
 
-  matchDescriptor(faceDescriptor: number[]) {
+  matchDescriptor(faceDescriptor: number[], threshold?: number) {
     if (!this.matcher) {
       // silently return null as there is nothing to match with
       return null;
     }
 
     const match = this.matcher.matchDescriptor(new Float32Array(faceDescriptor));
+    const distanceThreshold = threshold ?? this.matcher.distanceThreshold;
 
-    return match.distance < this.matcher.distanceThreshold
+    return match.distance < distanceThreshold
       ? { personId: match.label, distance: match.distance }
       : null;
   }
@@ -56,6 +57,7 @@ export class PersonMatcher {
 export const matchFace = (
   faceDescriptor: number[],
   referenceData: Record<string, number[][]>,
+  threshold?: number,
 ) => {
-  return new PersonMatcher(referenceData).matchDescriptor(faceDescriptor);
+  return new PersonMatcher(referenceData).matchDescriptor(faceDescriptor, threshold);
 };

@@ -4,6 +4,7 @@ import { getFaceAreaDTO } from './face-areas';
 import { detectFaces, matchFace, PersonMatcher } from '../face-api/detection';
 import { groupBy } from './utils/group-by';
 import { getPerson } from './people';
+import { getIntervalThreshold, queryAgeInterval, updateIntervalThreshold } from '../kb/queries';
 
 export type FilesRequest = {
   directoryId: string;
@@ -98,9 +99,21 @@ export const processFile = async (fileId: string) => {
       const descriptorsByPersonId = await getDescriptorsByPersonId();
       const matcher = new PersonMatcher(descriptorsByPersonId);
 
-      for (const { detection, descriptor } of faceDetections) {
+      for (const { detection, descriptor, age } of faceDetections) {
         const { x, y, width, height } = detection.relativeBox;
-        const personId = matcher.matchDescriptor(descriptor)?.personId;
+        // get age category from KB
+        const ageCategory = await queryAgeInterval(age) || 'N/A';
+        // get age category recognition threshold from KB
+        const threshold = await getIntervalThreshold(ageCategory);
+        const match = matcher.matchDescriptor(descriptor, threshold);
+
+        // narrow down threshold if recognition distance is better than previously specified
+        if (ageCategory && match && (!threshold || match.distance < threshold)) {
+          // update recognition threshold in the KB
+          await updateIntervalThreshold(ageCategory, match.distance);
+        }
+
+        const personId = match?.personId;
         const faceArea = await FaceArea.create({
           fileId,
           x,
@@ -109,6 +122,8 @@ export const processFile = async (fileId: string) => {
           height,
           descriptor,
           personId,
+          age,
+          ageCategory,
         });
 
         file.faceAreas.push(faceArea);
@@ -177,8 +192,9 @@ export const getDescriptorsByPersonId = async () => {
 export const recognizeFaceArea = async (faceAreaId: string) => {
   const faceArea = await FaceArea.findByPk(faceAreaId, { rejectOnEmpty: true });
   const descriptorsByPersonId = await getDescriptorsByPersonId();
+  const threshold = await getIntervalThreshold(faceArea.ageCategory);
 
-  const match = matchFace(faceArea.descriptor, descriptorsByPersonId);
+  const match = matchFace(faceArea.descriptor, descriptorsByPersonId, threshold);
 
   return match
     ? await getPerson(match.personId)
