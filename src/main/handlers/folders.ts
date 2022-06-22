@@ -67,7 +67,5 @@ export const recognizeDirectory = async (directoryId: string) => {
     } catch { }
   }
 
-  console.log(counters)
-
   return counters;
 };

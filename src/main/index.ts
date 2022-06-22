@@ -5,7 +5,7 @@ import { registerEventHandlers } from './event-handlers';
 import { initDB } from './db';
 import { initFaceAPI } from './face-api';
 import { config } from './config';
-import { initKB } from './kb';
+import { initKB, saveKB } from './kb';
 
 let mainWindow = null;
 
@@ -35,4 +35,9 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+app.on('will-quit', async () => {
+  await saveKB();
+  mainWindow = null;
 });
